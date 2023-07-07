@@ -1,9 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.User;
+import com.example.backend.entity.Visiting;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -13,6 +11,6 @@ import javax.annotation.Resource;
  * @author liang-chenming
  * @since 2023-07-07
  */
-public interface IUserService extends IService<User> {
+public interface IVisitingService extends IService<Visiting> {
 
 }
