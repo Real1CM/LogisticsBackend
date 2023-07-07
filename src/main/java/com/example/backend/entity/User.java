@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,6 +24,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户ID")
+    @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
     @ApiModelProperty(value = "用户名")
@@ -33,8 +36,8 @@ public class User implements Serializable {
     @ApiModelProperty(value = "密码")
     private String pswd;
 
-    @ApiModelProperty(value = "0:男,1:女")
-    private Integer gender;
+    @ApiModelProperty(value = "1:男,2:女")
+    private String gender;
 
     @ApiModelProperty(value = "电话")
     private String phone;
