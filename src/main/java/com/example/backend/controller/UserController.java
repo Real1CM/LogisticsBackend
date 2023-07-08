@@ -2,7 +2,9 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.backend.VO.ResultVO;
 import com.example.backend.entity.User;
+import com.example.backend.form.RuleForm;
 import com.example.backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +23,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    //增
     @Autowired
     private IUserService iUserService;
-
-    //增
     @PostMapping("/save")
     public boolean save(@RequestBody User user) {
         return iUserService.save(user);
@@ -32,7 +33,7 @@ public class UserController {
 
     //删
     @GetMapping("/remove")
-    public boolean remove(Integer i) {
+    public boolean remove(@RequestParam(value = "user_id") Integer i) {
         return iUserService.removeById(i);
     }
 
@@ -42,7 +43,7 @@ public class UserController {
         return iUserService.saveOrUpdate(user);
     }
 
-    //增
+    //改
     @PostMapping("/update")
     public boolean update(@RequestBody User user) {
         return iUserService.updateById(user);
@@ -56,5 +57,10 @@ public class UserController {
         return iUserService.list(lambdaQueryWrapper);
     }
 
-
+    //登录
+    @GetMapping("/login")
+    public ResultVO login(RuleForm ruleForm) {
+        ResultVO resultVO = this.iUserService.login(ruleForm);
+        return resultVO;
+    }
 }
