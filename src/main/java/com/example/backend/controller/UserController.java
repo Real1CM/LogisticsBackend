@@ -7,7 +7,6 @@ import com.example.backend.entity.User;
 import com.example.backend.form.RuleForm;
 import com.example.backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +22,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    //增
     @Autowired
     private IUserService iUserService;
+
+    //增,注册
     @PostMapping("/save")
     public boolean save(@RequestBody User user) {
         return iUserService.save(user);
@@ -33,8 +33,8 @@ public class UserController {
 
     //删
     @GetMapping("/remove")
-    public boolean remove(@RequestParam(value = "user_id") Integer i) {
-        return iUserService.removeById(i);
+    public boolean remove(Integer userId) {
+        return iUserService.removeById(userId);
     }
 
     //改或增
@@ -57,10 +57,13 @@ public class UserController {
         return iUserService.list(lambdaQueryWrapper);
     }
 
-    //登录
+    //登录 有点问题
     @GetMapping("/login")
     public ResultVO login(RuleForm ruleForm) {
         ResultVO resultVO = this.iUserService.login(ruleForm);
         return resultVO;
     }
+
+    //分页
+    //@PostMapping("list")
 }

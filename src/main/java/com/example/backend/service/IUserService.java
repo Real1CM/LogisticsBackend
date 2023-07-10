@@ -4,9 +4,6 @@ import com.example.backend.VO.ResultVO;
 import com.example.backend.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.backend.form.RuleForm;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
