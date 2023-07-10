@@ -10,4 +10,5 @@ import com.example.backend.entity.LoginForm;
 public interface AdminService extends IService<Admin>{
     Admin login(LoginForm loginForm);
 
+    Admin getAdminById(Long useId);
 }

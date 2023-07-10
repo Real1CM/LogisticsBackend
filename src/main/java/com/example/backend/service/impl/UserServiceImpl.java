@@ -33,26 +33,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = baseMapper.selectOne(queryWrapper);
         return user;
     }
-//
-//    @Override
-//    public User getUserById(Long useId) {
-//        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
-//        queryWrapper.eq("user_id",useId);
-//        return baseMapper.selectOne(queryWrapper);
-//    }
 
-//    @Override
-//    public IPage<User> getUserByOpr(Page<User> pageParam, User student) {
-//        QueryWrapper<User> studentQueryWrapper = new QueryWrapper<>();
-//        if(!StringUtils.isEmpty(user.getName())){
-//            studentQueryWrapper.like("name",student.getName());
-//        }
-//        if(!StringUtils.isEmpty(student.getClazzName())){
-//            studentQueryWrapper.like("clazz_name",student.getClazzName());
-//        }
-//        studentQueryWrapper.orderByAsc("id");
-//        Page<User> studentPage = baseMapper.selectPage(pageParam,userQueryWrapper);
-//        return userPage;
-//    }
+    @Override
+    public User getUserById(Long useId) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("user_id",useId);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
 }
 

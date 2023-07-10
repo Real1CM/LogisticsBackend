@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 public interface IUserService extends IService<User> {
     User login(LoginForm loginForm);
 
-//    User getUserById(Long useId);
-//
-//    IPage<User> getUserByOpr(Page<User> pageParam, User user);
+    User getUserById(Long useId);
+
 }
