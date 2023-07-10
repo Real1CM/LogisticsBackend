@@ -3,9 +3,10 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.VO.ResultVO;
+import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
-import com.example.backend.form.RuleForm;
 import com.example.backend.service.IUserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,15 +20,17 @@ import java.util.List;
  * @author liang-chenming
  * @since 2023-07-07
  */
+@Api("用户API")
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    //增,注册
+    //增,注册,MD5
     @PostMapping("/save")
     public boolean save(@RequestBody User user) {
+        user.setPswd(MD5utils.code(user.getPswd()));
         return iUserService.save(user);
     }
 
@@ -56,14 +59,4 @@ public class UserController {
         lambdaQueryWrapper.like(User::getUserName,user.getUserName());
         return iUserService.list(lambdaQueryWrapper);
     }
-
-    //登录 有点问题
-    @GetMapping("/login")
-    public ResultVO login(RuleForm ruleForm) {
-        ResultVO resultVO = this.iUserService.login(ruleForm);
-        return resultVO;
-    }
-
-    //分页
-    //@PostMapping("list")
 }
