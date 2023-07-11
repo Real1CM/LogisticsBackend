@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.Dish;
 import com.example.backend.entity.DishDetail;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,21 +34,31 @@ public class DishDetailController {
     private IDishDetailService iDishDetailService;
 
     //增
-    @PostMapping("/save")
+    @ApiOperation("添加菜品明细")
+    @PostMapping("/saveDishDetail")
     public Boolean save(@RequestBody DishDetail dishDetail) {
         return iDishDetailService.save(dishDetail);
     }
 
     //删
-    @GetMapping("/remove")
+    @ApiOperation("删除菜品明细")
+    @DeleteMapping("/removeDishDetail")
     public Boolean remove(Integer integer) {
         Map<String,Object> map = new HashMap<>();
         map.put("user_ID",integer);
         return iDishDetailService.removeByMap(map);
     }
 
+    //改
+    @ApiOperation("修改菜品明细")
+    @PostMapping("/updateDishDetail")
+    public boolean update(@RequestBody DishDetail dishDetail) {
+        return iDishDetailService.updateById(dishDetail);
+    }
+
     //模糊查询
-    @PostMapping("/select")
+    @ApiOperation("查询菜品明细")
+    @GetMapping("/selectDishDetail")
     public List<DishDetail> select(@RequestBody DishDetail dishDetail) {
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(DishDetail::getDishDetailId, dishDetail.getDishDetailId());
@@ -54,7 +66,8 @@ public class DishDetailController {
     }
 
     //分页
-    @PostMapping("/listPage")
+    @ApiOperation("分页查询菜品明细")
+    @PostMapping("/listPageDishDetail")
     private List<DishDetail> listPage(@RequestBody QuaryPageVO quaryPageVO) {
         Page<DishDetail> page = new Page<>();
         page.setCurrent(quaryPageVO.getPageNum());
