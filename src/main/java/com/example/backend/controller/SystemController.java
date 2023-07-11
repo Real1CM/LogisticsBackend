@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.util.ResultCodeEnum;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +30,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/sms/system")
@@ -33,6 +45,58 @@ public class SystemController {
     private AdminService adminService;
     @Autowired
     private IUserService userService;
+
+    @ApiOperation("文件上传统一入口")
+    @PostMapping("/headerImgUpload")
+    public Result headerImgUpload(
+            @ApiParam("图像文件") @RequestPart("multipartFile") MultipartFile multipartFile,
+            HttpServletRequest request
+    ){
+        String uuid = UUID.randomUUID().toString().replace("_","").toLowerCase();
+        String originalFilename = multipartFile.getOriginalFilename();
+        int i = originalFilename.lastIndexOf(".");
+        String newFilename = uuid + originalFilename.substring(i);
+        //保存文件:将文件发送到第三方或独立的图片服务器上
+        String portraitPath = "D:/workSpace/project/23-internship---backstage/src/main/resources/public/upload/".concat(newFilename);
+        try {
+            multipartFile.transferTo(new File(portraitPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //响应图片的路径
+        String path = "upload/".concat(newFilename);
+        return Result.ok(path);
+    }
+
+    @ApiOperation("通过token口令获取当前登录的用户信息的方法")
+    @GetMapping("/getInfo")
+    public Result getInfoByToken(
+            @ApiParam("token口令") @RequestHeader("token") String token
+    ){
+        //校验token是否过期
+        boolean expiration = JwtHelper.isExpiration(token);
+        if(expiration){
+            return Result.build(null, ResultCodeEnum.TOKEN_ERROR);
+        }
+        //从token中解析出 用户id 和用户类型
+        Long useId = JwtHelper.getUserId(token);
+        Integer userType = JwtHelper.getUserType(token);
+
+        Map<String,Object> map = new LinkedHashMap<>();
+        switch (userType){
+            case 1:
+                Admin admin = adminService.getAdminById(useId);
+                map.put("userType",1);
+                map.put("user",admin);
+                break;
+            case 2:
+                User user = userService.getUserById(useId);
+                map.put("userType",2);
+                map.put("user",user);
+                break;
+        }
+        return Result.ok(map);
+    }
 
 
     @ApiOperation("登录的方法")
