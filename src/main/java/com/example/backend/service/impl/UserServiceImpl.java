@@ -1,12 +1,12 @@
 package com.example.backend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.backend.common.MD5utils;
 import com.example.backend.entity.LoginForm;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.backend.util.MD5;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public User login(LoginForm loginForm) {
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_name",loginForm.getUsername());
-        queryWrapper.eq("pswd", MD5.encrypt(loginForm.getPassword()));
+        queryWrapper.eq("pswd", MD5utils.code(loginForm.getPassword()));
 
         User user = baseMapper.selectOne(queryWrapper);
         return user;

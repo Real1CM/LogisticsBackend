@@ -32,6 +32,11 @@ public class UserController {
     @ApiOperation("添加用户信息")
     @PostMapping("/saveUser")
     public boolean save(@RequestBody User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if(lambdaQueryWrapper.eq(User::getPhone, user.getPhone()) != null) {
+            System.out.println("用户已存在!");
+            return false;
+        }
         user.setPswd(MD5utils.code(user.getPswd())); //加密
         return iUserService.save(user);
     }
