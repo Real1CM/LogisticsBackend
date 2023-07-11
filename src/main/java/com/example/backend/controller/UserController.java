@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author liang-chenming
@@ -30,7 +30,7 @@ public class UserController {
     //增,注册,MD5
     @PostMapping("/save")
     public boolean save(@RequestBody User user) {
-        user.setPswd(MD5utils.code(user.getPswd()));
+        user.setPswd(MD5utils.code(user.getPswd())); //加密
         return iUserService.save(user);
     }
 
@@ -56,7 +56,7 @@ public class UserController {
     @PostMapping("/select")
     public List<User> select(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getUserName,user.getUserName());
+        lambdaQueryWrapper.like(User::getUserName, user.getUserName());
         return iUserService.list(lambdaQueryWrapper);
     }
 }
