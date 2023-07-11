@@ -4,8 +4,6 @@ import com.example.backend.entity.LoginForm;
 import com.example.backend.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import javax.annotation.Resource;
-
 /**
  * <p>
  *  服务类

@@ -12,6 +12,9 @@ spring:
     time-zone: GMT+8
     serialization:
       write-dates-as-timestamps: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 mybatis-plus:
   configuration:
