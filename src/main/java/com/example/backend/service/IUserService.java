@@ -19,5 +19,5 @@ public interface IUserService extends IService<User> {
 
     User getUserById(Long useId);
 
-    Boolean accountLogin(AccountLoginVO accountLoginVO);
+    int accountLogin(AccountLoginVO accountLoginVO);
 }

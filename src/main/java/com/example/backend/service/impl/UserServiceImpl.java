@@ -40,16 +40,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Boolean accountLogin(AccountLoginVO accountLoginVO) {
+    public int accountLogin(AccountLoginVO accountLoginVO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("account", accountLoginVO.getAccount())
                 .eq("pswd", MD5utils.code(accountLoginVO.getPswd()));
         User user = baseMapper.selectOne(queryWrapper);
-        if (user == null) return false;
-        if (user.getStatus() == "1")
+        if (user == null) return -1;
+        if (user.getStatus() == "1") {
             accountLoginVO.setStatus(1);
-        else
+            return 1;
+        }
+        else {
             accountLoginVO.setStatus(0);
-        return true;
+            return 0;
+        }
     }
 }
