@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
 import com.example.backend.service.IUserService;
@@ -80,5 +81,11 @@ public class UserController {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccount, account);
         return iUserService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("这个lcm版的登录")
+    @PostMapping("lcmLogin")
+    public Boolean lcmLogin(@RequestBody AccountLoginVO accountLoginVO){
+        return iUserService.accountLogin(accountLoginVO);
     }
 }

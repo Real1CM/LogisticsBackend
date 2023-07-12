@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.entity.LoginForm;
 import com.example.backend.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -17,4 +18,6 @@ public interface IUserService extends IService<User> {
     User login(LoginForm loginForm);
 
     User getUserById(Long useId);
+
+    Boolean accountLogin(AccountLoginVO accountLoginVO);
 }
