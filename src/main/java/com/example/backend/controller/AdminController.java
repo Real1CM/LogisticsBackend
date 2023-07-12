@@ -1,14 +1,17 @@
 package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.Admin;
 import com.example.backend.service.AdminService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -49,5 +52,36 @@ public class AdminController {
         LambdaQueryWrapper<Admin> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Admin::getName,admin.getName());
         return adminService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("管理员的分页")
+    @PostMapping("/listPageAdmin")
+    private List<Admin> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Admin> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("id");
+        String b = (String) map.get("name");
+        String c = (String) map.get("gender");
+        String d = (String) map.get("password");
+        String e = (String) map.get("email");
+        String f = (String) map.get("telephone");
+        String g = (String) map.get("address");
+
+        LambdaQueryWrapper<Admin> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Admin::getId,a)
+                .like(Admin::getName,b)
+                .like(Admin::getGender,c)
+                .like(Admin::getPassword,d)
+                .like(Admin::getEmail,e)
+                .like(Admin::getTelephone,f)
+                .like(Admin::getAddress,g);
+
+        IPage res = adminService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

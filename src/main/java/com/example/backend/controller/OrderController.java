@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Order;
 import com.example.backend.service.IOrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,5 +59,34 @@ public class OrderController {
         LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Order::getOrderId, order.getOrderId());
         return iOrderService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("订单的分页功能")
+    @PostMapping("/listPageOrder")
+    private List<Order> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Order> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("orderId");
+        String b = (String) map.get("userId");
+        String c = (String) map.get("dishDetailId");
+        String d = (String) map.get("goodsDetailId");
+        String e = (String) map.get("money");
+        String f = (String) map.get("data");
+
+        LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Order::getOrderId,a)
+                .like(Order::getUserId,b)
+                .like(Order::getDishDetailId,c)
+                .like(Order::getGoodsDetailId,d)
+                .like(Order::getMoney,e)
+                .like(Order::getData,f);
+
+        IPage res = iOrderService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Dish;
 import com.example.backend.service.IDishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,5 +60,27 @@ public class DishController {
         return iDishService.list(lambdaQueryWrapper);
     }
 
+    @ApiOperation("菜品的分页")
+    @PostMapping("/listPageDish")
+    private List<Dish> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Dish> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("dishId");
+        String b = (String) map.get("dishName");
+        String c = (String) map.get("money");
+
+        LambdaQueryWrapper<Dish> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Dish::getDishId,a)
+                .like(Dish::getDishName,b)
+                .like(Dish::getMoney,c);
+
+        IPage res = iDishService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
+    }
 
 }

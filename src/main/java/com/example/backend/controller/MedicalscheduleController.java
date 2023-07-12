@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Medicalschedule;
 import com.example.backend.service.IMedicalscheduleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,5 +59,28 @@ public class MedicalscheduleController {
         LambdaQueryWrapper<Medicalschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Medicalschedule::getMedicalScheduleId, medicalschedule.getMedicalScheduleId());
         return iMedicalscheduleService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("医疗服务时间表的分页")
+    @PostMapping("/listPageMedicalSchedule")
+    private List<Medicalschedule> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Medicalschedule> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("medicalScheduleId");
+        String b = (String) map.get("medicalName");
+        String c = (String) map.get("time");
+
+        LambdaQueryWrapper<Medicalschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Medicalschedule::getMedicalScheduleId,a)
+                .like(Medicalschedule::getMedicalName,b)
+                .like(Medicalschedule::getTime,c);
+
+        IPage res = iMedicalscheduleService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }
