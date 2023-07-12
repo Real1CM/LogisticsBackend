@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class UserController {
     @PostMapping("/saveUser")
     public boolean save(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        if(lambdaQueryWrapper.eq(User::getPhone, user.getPhone()) != null) {
+        if(lambdaQueryWrapper.eq(User::getPhone, user.getPhone()).eq(User::getAccount, user.getAccount()) != null) {
             System.out.println("用户已存在!");
             return false;
         }
@@ -68,6 +69,14 @@ public class UserController {
     public List<User> select(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(User::getUserName, user.getUserName());
+        return iUserService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("前端请求数据")
+    @GetMapping("/getUserMsg")
+    public List<User> getUserMsg(String account) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getAccount, account);
         return iUserService.list(lambdaQueryWrapper);
     }
 }
