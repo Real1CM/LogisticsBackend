@@ -20,4 +20,6 @@ public interface IUserService extends IService<User> {
     User getUserById(Long useId);
 
     int accountLogin(AccountLoginVO accountLoginVO);
+
+    User register(User user);
 }

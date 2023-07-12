@@ -9,10 +9,8 @@ import com.example.backend.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -35,8 +33,9 @@ public class UserController {
     @ApiOperation("添加用户信息")
     @PostMapping("/saveUser")
     public boolean save(@RequestBody User user) {
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        if(lambdaQueryWrapper.eq(User::getPhone, user.getPhone()).eq(User::getAccount, user.getAccount()) != null) {
+
+        User selected = iUserService.register(user);
+        if(selected != null) {
             System.out.println("用户已存在!");
             return false;
         }
@@ -73,7 +72,6 @@ public class UserController {
         lambdaQueryWrapper.like(User::getUserName, user.getUserName());
         return iUserService.list(lambdaQueryWrapper);
     }
-
 
     @ApiOperation("前端请求数据")
     @GetMapping("/getUserMsg")

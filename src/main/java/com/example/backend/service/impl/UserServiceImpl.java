@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.common.MD5utils;
@@ -54,5 +55,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             accountLoginVO.setStatus(0);
             return 0;
         }
+    }
+
+    @Override
+    public User register(User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getPhone, user.getPhone()).eq(User::getAccount, user.getAccount());
+        User user1 = baseMapper.selectOne(lambdaQueryWrapper);
+        return user1;
     }
 }
