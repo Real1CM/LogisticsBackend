@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Visiting;
 import com.example.backend.service.IVisitingService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,5 +59,28 @@ public class VisitingController {
         LambdaQueryWrapper<Visiting> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Visiting::getVisitingname, visiting.getVisitingname());
         return iVisitingService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("绿色基地的分页")
+    @PostMapping("/listPageVisiting")
+    private List<Visiting> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Visiting> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("visitingId");
+        String b = (String) map.get("visitingName");
+        String c = (String) map.get("visitingTimeId");
+
+        LambdaQueryWrapper<Visiting> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Visiting::getVisitingId,a)
+                .like(Visiting::getVisitingname,b)
+                .like(Visiting::getVisitingTimeId,c);
+
+        IPage res = iVisitingService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

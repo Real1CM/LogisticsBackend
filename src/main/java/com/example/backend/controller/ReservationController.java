@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Reservation;
 import com.example.backend.service.IReservationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,5 +59,30 @@ public class ReservationController {
         LambdaQueryWrapper<Reservation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Reservation::getReservationsId, reservation.getReservationsId());
         return iReservationService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("预约的分页功能")
+    @PostMapping("/listPageReservation")
+    private List<Reservation> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Reservation> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("reservationId");
+        String b = (String) map.get("medicalId");
+        String c = (String) map.get("visitingId");
+        String d = (String) map.get("userId");
+
+        LambdaQueryWrapper<Reservation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Reservation::getReservationsId,a)
+                .like(Reservation::getMedicalId,b)
+                .like(Reservation::getVisitingId,c)
+                .like(Reservation::getUserId,d);
+
+        IPage res = iReservationService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

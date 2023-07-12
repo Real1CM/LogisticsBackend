@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.Dish;
 import com.example.backend.entity.DishDetail;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
@@ -66,7 +65,7 @@ public class DishDetailController {
     }
 
     //分页
-    @ApiOperation("分页查询菜品明细")
+    @ApiOperation("菜品明细的分页")
     @PostMapping("/listPageDishDetail")
     private List<DishDetail> listPage(@RequestBody QuaryPageVO quaryPageVO) {
         Page<DishDetail> page = new Page<>();
@@ -83,7 +82,7 @@ public class DishDetailController {
 
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(DishDetail::getDishDetailId,a)
-                .like(DishDetail::getUserId , b)
+                .like(DishDetail::getUserId,b)
                 .like(DishDetail::getDishId,c)
                 .like(DishDetail::getNumber,d)
                 .like(DishDetail::getStatus,e)

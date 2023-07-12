@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Goods;
 import com.example.backend.service.IGoodsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,5 +58,28 @@ public class GoodsController {
         LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goods::getGoodsName, goods.getGoodsName());
         return iGoodsService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("商品的分页")
+    @PostMapping("/listPageGoods")
+    private List<Goods> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Goods> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("goodsId");
+        String b = (String) map.get("goodsName");
+        String c = (String) map.get("money");
+
+        LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Goods::getGoodsId,a)
+                .like(Goods::getGoodsName,b)
+                .like(Goods::getMoney,c);
+
+        IPage res = iGoodsService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

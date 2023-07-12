@@ -2,6 +2,9 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
 import com.example.backend.service.IUserService;
@@ -10,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,5 +68,36 @@ public class UserController {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(User::getUserName, user.getUserName());
         return iUserService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("用户的分页")
+    @PostMapping("/listPageUser")
+    private List<User> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<User> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("userId");
+        String b = (String) map.get("userName");
+        String c = (String) map.get("account");
+        String d = (String) map.get("pswd");
+        String e = (String) map.get("gender");
+        String f = (String) map.get("phone");
+        String g = (String) map.get("status");
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(User::getUserId,a)
+                .like(User::getUserName,b)
+                .like(User::getAccount,c)
+                .like(User::getPswd,d)
+                .like(User::getGender,e)
+                .like(User::getPhone,f)
+                .like(User::getStatus,g);
+
+        IPage res = iUserService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

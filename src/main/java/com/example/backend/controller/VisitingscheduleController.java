@@ -2,14 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.example.backend.entity.Medicalschedule;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Visitingschedule;
-import com.example.backend.service.IMedicalscheduleService;
 import com.example.backend.service.IVisitingscheduleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -57,5 +59,28 @@ public class VisitingscheduleController {
         LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Visitingschedule::getVisitingScheduleId, visitingschedule.getVisitingScheduleId());
         return iVisitingscheduleService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("绿色基地时间表的分页")
+    @PostMapping("/listPageVisitingSchedule")
+    private List<Visitingschedule> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Visitingschedule> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("visitingScheduleId");
+        String b = (String) map.get("visitingId");
+        String c = (String) map.get("time");
+
+        LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Visitingschedule::getVisitingScheduleId,a)
+                .like(Visitingschedule::getVisitingId,b)
+                .like(Visitingschedule::getTime,c);
+
+        IPage res = iVisitingscheduleService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }

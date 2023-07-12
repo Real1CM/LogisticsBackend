@@ -2,12 +2,16 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Medical;
 import com.example.backend.service.IMedicalService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,5 +59,28 @@ public class MedicalController {
         LambdaQueryWrapper<Medical> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Medical::getMedicalName, medical.getMedicalName());
         return iMedicalService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("医疗服务的分页")
+    @PostMapping("/listPageMedical")
+    private List<Medical> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+        Page<Medical> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        String a = (String) map.get("medicalId");
+        String b = (String) map.get("medicalName");
+        String c = (String) map.get("medicalTimeId");
+
+        LambdaQueryWrapper<Medical> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(Medical::getMedicalId,a)
+                .like(Medical::getMedicalName,b)
+                .like(Medical::getMedicalTimeId,c);
+
+        IPage res = iMedicalService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 }
