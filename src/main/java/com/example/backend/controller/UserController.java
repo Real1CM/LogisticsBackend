@@ -8,6 +8,7 @@ import com.example.backend.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.jws.soap.SOAPBinding;
@@ -72,9 +73,10 @@ public class UserController {
         return iUserService.list(lambdaQueryWrapper);
     }
 
+
     @ApiOperation("前端请求数据")
     @GetMapping("/getUserMsg")
-    public List<User> getUserMsg(String account) {
+    public List<User> getUserMsg(@RequestBody String account) {  //入参是一串账号号,比如12375634967
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccount, account);
         return iUserService.list(lambdaQueryWrapper);
