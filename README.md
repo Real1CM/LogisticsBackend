@@ -8,3 +8,5 @@
 - 短信验证登录 lcm
 - redis缓存
 - 还有一些高级的,想到再写
+
+ _把sql文件放src/main/resources/db.sql这里了,可以参照一下_ _ 
