@@ -29,8 +29,8 @@ public class DishDetail implements Serializable {
     private Integer dishDetailId;
 
     @ApiModelProperty(value = "用户ID")
-    @TableField("user_ID")
-    private Integer userId;
+    @TableField("account")
+    private Integer account;
 
     @ApiModelProperty(value = "菜品ID")
     @TableField("dish_ID")

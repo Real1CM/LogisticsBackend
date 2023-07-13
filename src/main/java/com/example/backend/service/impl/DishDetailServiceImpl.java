@@ -1,12 +1,13 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.entity.DishDetail;
+import com.example.backend.entity.Order;
 import com.example.backend.mapper.DishDetailMapper;
 import com.example.backend.service.IDishDetailService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
+;
+import java.util.List;
 
 /**
  * <p>

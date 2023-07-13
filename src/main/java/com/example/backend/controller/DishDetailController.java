@@ -2,16 +2,19 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.DishDetail;
+import com.example.backend.entity.Order;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +77,7 @@ public class DishDetailController {
 
         HashMap map = quaryPageVO.getMap();
         String a = (String) map.get("dishDetailId");
-        String b = (String) map.get("userId");
+        String b = (String) map.get("account");
         String c = (String) map.get("dishId");
         String d = (String) map.get("number");
         String e = (String) map.get("status");
@@ -82,7 +85,7 @@ public class DishDetailController {
 
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(DishDetail::getDishDetailId,a)
-                .like(DishDetail::getUserId,b)
+                .like(DishDetail::getAccount,b)
                 .like(DishDetail::getDishId,c)
                 .like(DishDetail::getNumber,d)
                 .like(DishDetail::getStatus,e)
@@ -92,5 +95,24 @@ public class DishDetailController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
+    }
+
+    @ApiOperation("根据Order表里的userId找到全部dish_detail")
+    @PostMapping("/getAllDetail")
+    public List<DishDetail> getAllDetail(@RequestBody Order order){
+        LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(DishDetail::getAccount, order.getAccount());
+        return iDishDetailService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("根据明细表求一个用户选择的菜品总金额")
+    @PostMapping("/sumTotalDish")
+    public float sumTotalDish(String account) {
+        QueryWrapper<DishDetail> ew = new QueryWrapper<>();
+        ew.eq("account", account);
+        ew.select("IFNULL(sum(money),0) AS sum");
+        Map<String, Object> map = iDishDetailService.getMap(ew);
+        BigDecimal sumCount = (BigDecimal) map.get("sum");
+        return sumCount.floatValue();
     }
 }

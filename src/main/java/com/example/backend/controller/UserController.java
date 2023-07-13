@@ -2,7 +2,12 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.AccountLoginVO;
+import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
 import com.example.backend.service.IUserService;
@@ -11,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,8 +52,10 @@ public class UserController {
     //删
     @ApiOperation("删除用户信息")
     @DeleteMapping("/removeUser")
-    public boolean remove(Integer userId) {
-        return iUserService.removeById(userId);
+    public boolean remove(String account) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account",account);
+        return iUserService.remove(queryWrapper);
     }
 
     //改或增
@@ -61,7 +69,10 @@ public class UserController {
     @ApiOperation("修改用户信息")
     @PostMapping("/updateUser")
     public boolean update(@RequestBody User user) {
-        return iUserService.updateById(user);
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("account",user.getAccount());
+
+        return iUserService.update(user, updateWrapper);
     }
 
     //模糊查询
@@ -71,6 +82,40 @@ public class UserController {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(User::getUserName, user.getUserName());
         return iUserService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("用户的分页")
+    @PostMapping("/listPagel")
+    private List<User> listPage(@RequestBody QuaryPageVO quaryPageVO) {
+
+        Page<User> page = new Page<>();
+        page.setCurrent(quaryPageVO.getPageNum());
+        page.setSize(quaryPageVO.getPageSize());
+
+        HashMap map = quaryPageVO.getMap();
+        //String a = (String) map.get("userId");
+        String b = (String) map.get("userName");
+        //String c = (String) map.get("pswd");
+        String d = (String) map.get("account");
+        //String e = (String) map.get("gender");
+        String f = (String) map.get("phone");
+        //String g =(String) map.get("picture");
+        String h =(String) map.get("status");
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper//.like(User::getUserId,a)
+                        .like(User::getUserName,b)
+                        //.like(User::getPswd,MD5utils.code(c))
+                        .like(User::getAccount,d)
+                        //.like(User::getGender,e)
+                        .like(User::getPhone,f)
+                        //.like(User::getPicture,g)
+                        .like(User::getStatus,h);
+
+        IPage res = iUserService.page(page,lambdaQueryWrapper);
+        System.out.println(res.getTotal());
+
+        return res.getRecords();
     }
 
     @ApiOperation("前端请求数据")

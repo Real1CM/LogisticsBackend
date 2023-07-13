@@ -30,8 +30,8 @@ public class Order implements Serializable {
     private Integer orderId;
 
     @ApiModelProperty(value = "用户ID")
-    @TableField("user_ID")
-    private Integer userId;
+    @TableField("account")
+    private Integer account;
 
     @ApiModelProperty(value = "菜品明细ID")
     @TableField("dish_detail_ID")
@@ -42,7 +42,7 @@ public class Order implements Serializable {
     private Integer goodsDetailId;
 
     @ApiModelProperty(value = "总金额")
-    private String money;
+    private float money;
 
     @ApiModelProperty(value = "订单日期")
     private LocalDate data;

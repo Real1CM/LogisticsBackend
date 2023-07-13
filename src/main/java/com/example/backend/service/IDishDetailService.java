@@ -2,6 +2,9 @@ package com.example.backend.service;
 
 import com.example.backend.entity.DishDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.backend.entity.Order;
+
+import java.util.List;
 
 /**
  * <p>

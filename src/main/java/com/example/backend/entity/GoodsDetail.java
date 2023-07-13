@@ -28,9 +28,9 @@ public class GoodsDetail implements Serializable {
     @TableId(value = "goods_detail_ID", type = IdType.AUTO)
     private Integer goodsDetailId;
 
-    @ApiModelProperty(value = "用户ID")
-    @TableField("user_ID")
-    private Integer userId;
+    @ApiModelProperty(value = "用户账户")
+    @TableField("account")
+    private Integer account;
 
     @ApiModelProperty(value = "商品ID")
     @TableField("goods_ID")
