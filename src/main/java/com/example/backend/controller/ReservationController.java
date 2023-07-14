@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Reservation;
 import com.example.backend.entity.User;
@@ -91,10 +92,10 @@ public class ReservationController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Reservation> page(int size, int num) {
+    public List<Reservation> page(@RequestBody PageVO pageVO) {
         Page<Reservation> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<Reservation> result = iReservationService.page(page);
         return result.getRecords();
     }

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.AccountLoginVO;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
@@ -143,10 +144,10 @@ public class UserController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<User> page(int size, int num) {
+    public List<User> page(@RequestBody PageVO pageVO) {
         Page<User> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<User> result = iUserService.page(page);
         return result.getRecords();
     }

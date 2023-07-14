@@ -4,6 +4,7 @@ package com.example.backend.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Dish;
 import com.example.backend.entity.User;
@@ -86,10 +87,10 @@ public class DishController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Dish> page(int size, int num) {
+    public List<Dish> page(@RequestBody PageVO pageVO) {
         Page<Dish> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<Dish> result = iDishService.page(page);
         return result.getRecords();
     }

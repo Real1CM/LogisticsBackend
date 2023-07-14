@@ -4,6 +4,7 @@ package com.example.backend.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.User;
 import com.example.backend.entity.Visiting;
@@ -87,10 +88,10 @@ public class VisitingController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Visiting> page(int num, int size) {
+    public List<Visiting> page(@RequestBody PageVO pageVO) {
         Page<Visiting> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<Visiting> result = iVisitingService.page(page);
         return result.getRecords();
     }

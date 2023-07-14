@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
@@ -102,10 +103,10 @@ public class GoodsDetailController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<GoodsDetail> page(int num, int size) {
+    public List<GoodsDetail> page(@RequestBody PageVO pageVO) {
         Page<GoodsDetail> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<GoodsDetail> result = iGoodsDetailService.page(page);
         return result.getRecords();
     }
