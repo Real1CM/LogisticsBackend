@@ -87,8 +87,10 @@ public class VisitingController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Visiting> page() {
+    public List<Visiting> page(int num, int size) {
         Page<Visiting> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Visiting> result = iVisitingService.page(page);
         return result.getRecords();
     }

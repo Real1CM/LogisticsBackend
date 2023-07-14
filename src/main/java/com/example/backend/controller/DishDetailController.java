@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.DishDetail;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.DishDetailMapper;
@@ -100,8 +101,10 @@ public class DishDetailController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<DishDetail> page() {
+    public List<DishDetail> page(int size, int num) {
         Page<DishDetail> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<DishDetail> result = iDishDetailService.page(page);
         return result.getRecords();
     }
@@ -112,5 +115,15 @@ public class DishDetailController {
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(DishDetail::getAccount, order.getAccount());
         return iDishDetailService.list(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("查某一用户的菜品总金额")
+    @PostMapping("/sumDishes")
+    public Float sumDishes(@RequestBody Order order) {
+        QueryWrapper<DishDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("IFNULL(sum(money),0) as money")
+                .eq("account", order.getAccount());
+        DishDetail detail = iDishDetailService.getOne(queryWrapper);
+        return detail.getMoney();
     }
 }

@@ -2,12 +2,12 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
-import com.example.backend.entity.User;
 import com.example.backend.service.IGoodsDetailService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author liang-chenming
@@ -59,7 +59,7 @@ public class GoodsDetailController {
     @GetMapping("/selectGoodsDetail")
     public List<GoodsDetail> select(@RequestBody GoodsDetail goodsDetail) {
         LambdaQueryWrapper<GoodsDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(GoodsDetail::getGoodsDetailId,goodsDetail.getGoodsDetailId());
+        lambdaQueryWrapper.like(GoodsDetail::getGoodsDetailId, goodsDetail.getGoodsDetailId());
         return iGoodsDetailService.list(lambdaQueryWrapper);
     }
 
@@ -79,14 +79,14 @@ public class GoodsDetailController {
         String f = (String) map.get("money");
 
         LambdaQueryWrapper<GoodsDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(GoodsDetail::getGoodsDetailId,a)
-                .like(GoodsDetail::getAccount,b)
-                .like(GoodsDetail::getGoodsId,c)
-                .like(GoodsDetail::getNumber,d)
-                .like(GoodsDetail::getStatus,e)
-                .like(GoodsDetail::getMoney,f);
+        lambdaQueryWrapper.like(GoodsDetail::getGoodsDetailId, a)
+                .like(GoodsDetail::getAccount, b)
+                .like(GoodsDetail::getGoodsId, c)
+                .like(GoodsDetail::getNumber, d)
+                .like(GoodsDetail::getStatus, e)
+                .like(GoodsDetail::getMoney, f);
 
-        IPage res = iGoodsDetailService.page(page,lambdaQueryWrapper);
+        IPage res = iGoodsDetailService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -94,7 +94,7 @@ public class GoodsDetailController {
 
     @ApiOperation("根据Order表里的userId找到全部goods_detail")
     @PostMapping("/getAllDetail")
-    public List<GoodsDetail> getAllDetail(@RequestBody Order order){
+    public List<GoodsDetail> getAllDetail(@RequestBody Order order) {
         LambdaQueryWrapper<GoodsDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(GoodsDetail::getAccount, order.getAccount());
         return iGoodsDetailService.list(lambdaQueryWrapper);
@@ -102,9 +102,21 @@ public class GoodsDetailController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<GoodsDetail> page() {
+    public List<GoodsDetail> page(int num, int size) {
         Page<GoodsDetail> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<GoodsDetail> result = iGoodsDetailService.page(page);
         return result.getRecords();
+    }
+
+    @ApiOperation("查某一用户的商品总金额") //not yet
+    @PostMapping("/sumGoods")
+    public Float sumGoods(@RequestBody GoodsDetail goodsDetail) {
+        QueryWrapper<GoodsDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("IFNULL(sum(money),0) as money");
+        queryWrapper.like("account", goodsDetail.getAccount());
+        GoodsDetail detail = iGoodsDetailService.getOne(queryWrapper);
+        return detail.getMoney();
     }
 }

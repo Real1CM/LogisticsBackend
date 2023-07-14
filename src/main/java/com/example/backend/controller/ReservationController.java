@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author liang-chenming
@@ -78,12 +78,12 @@ public class ReservationController {
         String d = (String) map.get("userId");
 
         LambdaQueryWrapper<Reservation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Reservation::getReservationsId,a)
-                .like(Reservation::getMedicalId,b)
-                .like(Reservation::getVisitingId,c)
-                .like(Reservation::getUserId,d);
+        lambdaQueryWrapper.like(Reservation::getReservationsId, a)
+                .like(Reservation::getMedicalId, b)
+                .like(Reservation::getVisitingId, c)
+                .like(Reservation::getUserId, d);
 
-        IPage res = iReservationService.page(page,lambdaQueryWrapper);
+        IPage res = iReservationService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -91,8 +91,10 @@ public class ReservationController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Reservation> page() {
+    public List<Reservation> page(int size, int num) {
         Page<Reservation> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Reservation> result = iReservationService.page(page);
         return result.getRecords();
     }

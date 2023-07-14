@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author liang-chenming
@@ -75,11 +75,11 @@ public class VisitingscheduleController {
         String c = (String) map.get("time");
 
         LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Visitingschedule::getVisitingScheduleId,a)
-                .like(Visitingschedule::getVisitingId,b)
-                .like(Visitingschedule::getTime,c);
+        lambdaQueryWrapper.like(Visitingschedule::getVisitingScheduleId, a)
+                .like(Visitingschedule::getVisitingId, b)
+                .like(Visitingschedule::getTime, c);
 
-        IPage res = iVisitingscheduleService.page(page,lambdaQueryWrapper);
+        IPage res = iVisitingscheduleService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -87,8 +87,10 @@ public class VisitingscheduleController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Visitingschedule> page() {
+    public List<Visitingschedule> page(int num, int size) {
         Page<Visitingschedule> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Visitingschedule> result = iVisitingscheduleService.page(page);
         return result.getRecords();
     }

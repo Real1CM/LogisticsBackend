@@ -30,14 +30,14 @@ public class GoodsDetail implements Serializable {
 
     @ApiModelProperty(value = "用户账户")
     @TableField("account")
-    private Integer account;
+    private String account;
 
     @ApiModelProperty(value = "商品ID")
     @TableField("goods_ID")
     private Integer goodsId;
 
     @ApiModelProperty(value = "金额")
-    private String money;
+    private float money;
 
     @ApiModelProperty(value = "数量")
     private Integer number;

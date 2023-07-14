@@ -87,8 +87,10 @@ public class MedicalController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Medical> page() {
+    public List<Medical> page(int size, int num) {
         Page<Medical> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Medical> result = iMedicalService.page(page);
         return result.getRecords();
     }

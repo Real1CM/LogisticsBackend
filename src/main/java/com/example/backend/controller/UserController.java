@@ -143,8 +143,10 @@ public class UserController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<User> page() {
+    public List<User> page(int size, int num) {
         Page<User> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<User> result = iUserService.page(page);
         return result.getRecords();
     }

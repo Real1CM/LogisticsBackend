@@ -87,8 +87,10 @@ public class MedicalscheduleController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Medicalschedule> page() {
+    public List<Medicalschedule> page(int num, int size) {
         Page<Medicalschedule> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Medicalschedule> result = iMedicalscheduleService.page(page);
         return result.getRecords();
     }

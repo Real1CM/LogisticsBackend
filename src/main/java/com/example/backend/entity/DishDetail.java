@@ -30,14 +30,14 @@ public class DishDetail implements Serializable {
 
     @ApiModelProperty(value = "用户ID")
     @TableField("account")
-    private Integer account;
+    private String account;
 
     @ApiModelProperty(value = "菜品ID")
     @TableField("dish_ID")
     private Integer dishId;
 
     @ApiModelProperty(value = "金额")
-    private String money;
+    private float money;
 
     @ApiModelProperty(value = "数量")
     private Integer number;

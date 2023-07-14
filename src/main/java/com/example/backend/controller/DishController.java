@@ -74,11 +74,11 @@ public class DishController {
         String c = (String) map.get("money");
 
         LambdaQueryWrapper<Dish> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Dish::getDishId,a)
-                .like(Dish::getDishName,b)
-                .like(Dish::getMoney,c);
+        lambdaQueryWrapper.like(Dish::getDishId, a)
+                .like(Dish::getDishName, b)
+                .like(Dish::getMoney, c);
 
-        IPage res = iDishService.page(page,lambdaQueryWrapper);
+        IPage res = iDishService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -86,8 +86,10 @@ public class DishController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Dish> page() {
+    public List<Dish> page(int size, int num) {
         Page<Dish> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Dish> result = iDishService.page(page);
         return result.getRecords();
     }

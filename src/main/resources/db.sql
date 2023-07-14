@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 13/07/2023 16:05:39
+ Date: 14/07/2023 14:27:28
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `dish_detail`  (
   `dish_detail_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜品明细ID',
   `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户账户',
   `dish_ID` int(11) NOT NULL COMMENT '菜品ID',
-  `money` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '金额',
+  `money` float NOT NULL COMMENT '金额',
   `number` int(11) NOT NULL COMMENT '数量',
   `status` enum('已送达','正在配送','正在出餐') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '1:已送达,2:正在配送,3:正在出餐',
   PRIMARY KEY (`dish_detail_ID`) USING BTREE,
@@ -51,10 +51,10 @@ CREATE TABLE `dish_detail`  (
 -- ----------------------------
 -- Records of dish_detail
 -- ----------------------------
-INSERT INTO `dish_detail` VALUES (1, '2', 2, '2.1', 3, '正在配送');
-INSERT INTO `dish_detail` VALUES (2, '3', 1, '1.1', 1, '正在出餐');
-INSERT INTO `dish_detail` VALUES (4, '2', 2, '2.1', 2, '已送达');
-INSERT INTO `dish_detail` VALUES (5, '2', 2, '2.1', 2, '已送达');
+INSERT INTO `dish_detail` VALUES (1, '2', 2, 2.1, 3, '正在配送');
+INSERT INTO `dish_detail` VALUES (2, '3', 1, 1.1, 1, '正在出餐');
+INSERT INTO `dish_detail` VALUES (4, '2', 2, 2.1, 2, '已送达');
+INSERT INTO `dish_detail` VALUES (5, '2', 2, 2.1, 2, '已送达');
 
 -- ----------------------------
 -- Table structure for goods
@@ -79,7 +79,7 @@ CREATE TABLE `goods_detail`  (
   `goods_detail_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品明细ID',
   `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户账户',
   `goods_ID` int(11) NOT NULL COMMENT '商品ID',
-  `money` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '金额',
+  `money` float NOT NULL COMMENT '金额',
   `number` int(11) NOT NULL COMMENT '数量',
   `status` enum('已送达','正在配送','正在出餐') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '1:已送达,2:正在配送,3:正在出餐',
   PRIMARY KEY (`goods_detail_ID`) USING BTREE,
@@ -180,7 +180,6 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '张三', '1234567890', '123456', '男', '12345674567', 1, NULL);
 INSERT INTO `user` VALUES (3, 'xiaomin2', '1234567892', 'passwo2rd', '女', '19186243797', 0, NULL);
-INSERT INTO `user` VALUES (4, 'xiaomin1', '1234567891', 'passwo22d', '男', '19186243797', 0, NULL);
 INSERT INTO `user` VALUES (5, 'xiaom5', '12345678967', '1a1dc91c907325c69271ddf0c944bc72', '男', '19186243797', 0, NULL);
 INSERT INTO `user` VALUES (6, 'xiaom6', '12345634967', '4b94c0ea58dc6f9ec69dfa78d8a937b1', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (7, 'xiaom7', '12375634967', '7e8859faa4b991719d1642a346eae3ee', '男', '19186247797', 0, NULL);

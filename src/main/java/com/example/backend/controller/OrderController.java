@@ -93,9 +93,17 @@ public class OrderController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Order> page() {
+    public List<Order> page(int num, int size) {
         Page<Order> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Order> result = iOrderService.page(page);
         return result.getRecords();
+    }
+
+    @ApiOperation("设置订单总金额")
+    @GetMapping("/setSum")
+    public void setSum(@RequestBody Order order){
+
     }
 }

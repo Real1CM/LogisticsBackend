@@ -74,11 +74,11 @@ public class GoodsController {
         String c = (String) map.get("money");
 
         LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Goods::getGoodsId,a)
-                .like(Goods::getGoodsName,b)
-                .like(Goods::getMoney,c);
+        lambdaQueryWrapper.like(Goods::getGoodsId, a)
+                .like(Goods::getGoodsName, b)
+                .like(Goods::getMoney, c);
 
-        IPage res = iGoodsService.page(page,lambdaQueryWrapper);
+        IPage res = iGoodsService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -86,8 +86,10 @@ public class GoodsController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Goods> page() {
+    public List<Goods> page(int size, int num) {
         Page<Goods> page = new Page<>();
+        page.setCurrent(num);
+        page.setSize(size);
         IPage<Goods> result = iGoodsService.page(page);
         return result.getRecords();
     }
