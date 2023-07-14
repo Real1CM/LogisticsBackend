@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.User;
 import com.example.backend.entity.Visiting;
 import com.example.backend.service.IVisitingService;
 import io.swagger.annotations.ApiOperation;
@@ -82,5 +83,13 @@ public class VisitingController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
+    }
+
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<Visiting> page() {
+        Page<Visiting> page = new Page<>();
+        IPage<Visiting> result = iVisitingService.page(page);
+        return result.getRecords();
     }
 }

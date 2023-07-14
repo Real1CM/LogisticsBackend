@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
+import com.example.backend.entity.User;
 import com.example.backend.service.IGoodsDetailService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,4 +100,11 @@ public class GoodsDetailController {
         return iGoodsDetailService.list(lambdaQueryWrapper);
     }
 
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<GoodsDetail> page() {
+        Page<GoodsDetail> page = new Page<>();
+        IPage<GoodsDetail> result = iGoodsDetailService.page(page);
+        return result.getRecords();
+    }
 }

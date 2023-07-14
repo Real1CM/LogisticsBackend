@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Dish;
+import com.example.backend.entity.User;
 import com.example.backend.service.IDishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,4 +84,11 @@ public class DishController {
         return res.getRecords();
     }
 
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<Dish> page() {
+        Page<Dish> page = new Page<>();
+        IPage<Dish> result = iDishService.page(page);
+        return result.getRecords();
+    }
 }

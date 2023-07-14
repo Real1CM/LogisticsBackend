@@ -3,9 +3,12 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Reservation;
+import com.example.backend.entity.User;
+import com.example.backend.entity.Visitingschedule;
 import com.example.backend.service.IReservationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +87,13 @@ public class ReservationController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
+    }
+
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<Reservation> page() {
+        Page<Reservation> page = new Page<>();
+        IPage<Reservation> result = iReservationService.page(page);
+        return result.getRecords();
     }
 }

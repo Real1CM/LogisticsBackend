@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.DishDetail;
 import com.example.backend.entity.Order;
+import com.example.backend.entity.User;
 import com.example.backend.mapper.DishDetailMapper;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
@@ -95,6 +96,14 @@ public class DishDetailController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
+    }
+
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<DishDetail> page() {
+        Page<DishDetail> page = new Page<>();
+        IPage<DishDetail> result = iDishDetailService.page(page);
+        return result.getRecords();
     }
 
     @ApiOperation("根据Order表里的userId找到全部dish_detail")
