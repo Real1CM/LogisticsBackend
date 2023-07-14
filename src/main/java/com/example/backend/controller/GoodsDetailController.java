@@ -2,11 +2,9 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.DishDetail;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
 import com.example.backend.service.IGoodsDetailService;
@@ -14,10 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -103,14 +99,4 @@ public class GoodsDetailController {
         return iGoodsDetailService.list(lambdaQueryWrapper);
     }
 
-    @ApiOperation("根据明细表求一个用户选择的商品总金额")
-    @PostMapping("/sumTotalGoods")
-    public float sumTotalGoods(String account) {
-        QueryWrapper<GoodsDetail> ew = new QueryWrapper<>();
-        ew.eq("account", account);
-        ew.select("IFNULL(sum(money),0) AS sum");
-        Map<String, Object> map = iGoodsDetailService.getMap(ew);
-        BigDecimal sumCount = (BigDecimal) map.get("sum");
-        return sumCount.floatValue();
-    }
 }

@@ -10,6 +10,7 @@ import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.User;
+import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,8 @@ public class UserController {
 
     @Autowired
     private IUserService iUserService;
+    @Autowired
+    private UserMapper userMapper;
 
     //增,注册,MD5
     @ApiOperation("添加用户信息")
@@ -41,7 +44,7 @@ public class UserController {
     public boolean save(@RequestBody User user) {
 
         User selected = iUserService.register(user);
-        if(selected != null) {
+        if (selected != null) {
             System.out.println("用户已存在!");
             return false;
         }
@@ -52,9 +55,9 @@ public class UserController {
     //删
     @ApiOperation("删除用户信息")
     @DeleteMapping("/removeUser")
-    public boolean remove(String account) {
+    public boolean remove(User user) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account",account);
+        queryWrapper.eq("account", user.getAccount());
         return iUserService.remove(queryWrapper);
     }
 
@@ -70,7 +73,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public boolean update(@RequestBody User user) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("account",user.getAccount());
+        updateWrapper.eq("account", user.getAccount());
 
         return iUserService.update(user, updateWrapper);
     }
@@ -85,7 +88,7 @@ public class UserController {
     }
 
     @ApiOperation("用户的分页")
-    @PostMapping("/listPagel")
+    @PostMapping("/listPage")
     private List<User> listPage(@RequestBody QuaryPageVO quaryPageVO) {
 
         Page<User> page = new Page<>();
@@ -93,29 +96,35 @@ public class UserController {
         page.setSize(quaryPageVO.getPageSize());
 
         HashMap map = quaryPageVO.getMap();
-        //String a = (String) map.get("userId");
+        String a = (String) map.get("userId");
         String b = (String) map.get("userName");
         //String c = (String) map.get("pswd");
         String d = (String) map.get("account");
-        //String e = (String) map.get("gender");
+        String e = (String) map.get("gender");
         String f = (String) map.get("phone");
-        //String g =(String) map.get("picture");
-        String h =(String) map.get("status");
+        String g =(String) map.get("picture");
+        String h = (String) map.get("status");
 
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper//.like(User::getUserId,a)
-                        .like(User::getUserName,b)
-                        //.like(User::getPswd,MD5utils.code(c))
-                        .like(User::getAccount,d)
-                        //.like(User::getGender,e)
-                        .like(User::getPhone,f)
-                        //.like(User::getPicture,g)
-                        .like(User::getStatus,h);
+        lambdaQueryWrapper.like(User::getUserId,a)
+                .like(User::getUserName,b)
+                //.like(User::getPswd, new MD5utils().code(c))
+                .like(User::getAccount, d)
+                .like(User::getGender, e)
+                .like(User::getPhone,f)
+                .like(User::getPicture,g)
+                .like(User::getStatus, h);
 
-        IPage res = iUserService.page(page,lambdaQueryWrapper);
-        System.out.println(res.getTotal());
+        IPage res = iUserService.page(page, lambdaQueryWrapper);
 
         return res.getRecords();
+    }
+
+    @ApiOperation("返回全部数据")
+    @PostMapping("/selectAll")
+    public List<User> selectAll() {
+        List<User> users = userMapper.selectList(null);
+        return users;
     }
 
     @ApiOperation("前端请求数据")
@@ -128,7 +137,15 @@ public class UserController {
 
     @ApiOperation("这个lcm版的登录")
     @PostMapping("/lcmLogin")  //用第五个数据测试,第五个数据的密码是pass,也可以自己添加数据测试,你得记住密码加密后数据库里你是看不到密码的
-    public int lcmLogin(@RequestBody AccountLoginVO accountLoginVO){
+    public int lcmLogin(@RequestBody AccountLoginVO accountLoginVO) {
         return iUserService.accountLogin(accountLoginVO);
+    }
+
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public List<User> page() {
+        Page<User> page = new Page<>();
+        IPage<User> result = iUserService.page(page);
+        return result.getRecords();
     }
 }

@@ -2,12 +2,10 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Order;
-import com.example.backend.entity.User;
 import com.example.backend.service.IOrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,19 +88,5 @@ public class OrderController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
-    }
-
-    @ApiOperation("设置总金额")
-    @PostMapping("/setSum")
-    public void setSum(String account) {
-        DishDetailController dishDetailController = new DishDetailController();
-        GoodsDetailController goodsDetailController = new GoodsDetailController();
-        float sum = dishDetailController.sumTotalDish(account) + goodsDetailController.sumTotalGoods(account);
-        Order order = new Order();
-        order.setMoney(sum);
-
-        QueryWrapper<Order> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("account", account);
-        iOrderService.update(order, queryWrapper);
     }
 }

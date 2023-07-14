@@ -8,13 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.DishDetail;
 import com.example.backend.entity.Order;
+import com.example.backend.mapper.DishDetailMapper;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +46,8 @@ public class DishDetailController {
     @ApiOperation("删除菜品明细")
     @DeleteMapping("/removeDishDetail")
     public Boolean remove(Integer integer) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("user_ID",integer);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_ID", integer);
         return iDishDetailService.removeByMap(map);
     }
 
@@ -84,14 +84,14 @@ public class DishDetailController {
         String f = (String) map.get("money");
 
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(DishDetail::getDishDetailId,a)
-                .like(DishDetail::getAccount,b)
-                .like(DishDetail::getDishId,c)
-                .like(DishDetail::getNumber,d)
-                .like(DishDetail::getStatus,e)
-                .like(DishDetail::getMoney,f);
+        lambdaQueryWrapper.like(DishDetail::getDishDetailId, a)
+                .like(DishDetail::getAccount, b)
+                .like(DishDetail::getDishId, c)
+                .like(DishDetail::getNumber, d)
+                .like(DishDetail::getStatus, e)
+                .like(DishDetail::getMoney, f);
 
-        IPage res = iDishDetailService.page(page,lambdaQueryWrapper);
+        IPage res = iDishDetailService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
 
         return res.getRecords();
@@ -99,20 +99,9 @@ public class DishDetailController {
 
     @ApiOperation("根据Order表里的userId找到全部dish_detail")
     @PostMapping("/getAllDetail")
-    public List<DishDetail> getAllDetail(@RequestBody Order order){
+    public List<DishDetail> getAllDetail(@RequestBody Order order) {
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(DishDetail::getAccount, order.getAccount());
         return iDishDetailService.list(lambdaQueryWrapper);
-    }
-
-    @ApiOperation("根据明细表求一个用户选择的菜品总金额")
-    @PostMapping("/sumTotalDish")
-    public float sumTotalDish(String account) {
-        QueryWrapper<DishDetail> ew = new QueryWrapper<>();
-        ew.eq("account", account);
-        ew.select("IFNULL(sum(money),0) AS sum");
-        Map<String, Object> map = iDishDetailService.getMap(ew);
-        BigDecimal sumCount = (BigDecimal) map.get("sum");
-        return sumCount.floatValue();
     }
 }
