@@ -47,7 +47,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .eq("pswd", MD5utils.code(accountLoginVO.getPswd()));
         User user = baseMapper.selectOne(queryWrapper);
         if (user == null) return -1;
-        if (user.getStatus() == "1") {
+        if (user.getStatus() == 1) {
             accountLoginVO.setStatus(1);
             return 1;
         }

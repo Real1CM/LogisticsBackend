@@ -143,6 +143,7 @@ public class UserController {
     @ApiOperation("这个lcm版的登录")
     @PostMapping("/lcmLogin")  //用第五个数据测试,第五个数据的密码是pass,也可以自己添加数据测试,你得记住密码加密后数据库里你是看不到密码的
     public int lcmLogin(@RequestBody AccountLoginVO accountLoginVO) {
+
         return iUserService.accountLogin(accountLoginVO);
     }
 
