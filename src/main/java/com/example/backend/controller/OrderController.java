@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
@@ -102,10 +103,19 @@ public class OrderController {
         return result.getRecords();
     }
 
+    @Autowired
+    private GoodsDetailController goodsDetailController;
+    @Autowired
+    private DishDetailController dishDetailController;
+
     @ApiOperation("设置订单总金额") //没写完
     @GetMapping("/setSum")
-    public void setSum(@RequestBody Order order){
-        float sum = new GoodsDetailController().sumGoods(order) +new DishDetailController().sumDishes(order);
+    public void setSum(@RequestBody Order order) {
+        float sum = goodsDetailController.sumGoods(order) + dishDetailController.sumDishes(order);
         order.setMoney(sum);
+
+        LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Order::getAccount,order.getAccount());
+        iOrderService.saveOrUpdate(order, lambdaQueryWrapper);
     }
 }

@@ -82,7 +82,7 @@ public class UserController {
 
     //模糊查询
     @ApiOperation("模糊查询用户信息")
-    @GetMapping("/selectUser")
+    @PostMapping("/selectUser")
     public List<User> select(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(User::getAccount, user.getAccount());
