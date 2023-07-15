@@ -10,4 +10,6 @@ public class PageVO {
     public int pageSize = PAGE_SIZE;
     public int pageNum = PAGE_NUM;
     public int dataSum;
+
+    public Object data;
 }

@@ -148,13 +148,14 @@ public class UserController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<User> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
         pageVO.setDataSum(iUserService.count());
 
         Page<User> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<User> result = iUserService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }
