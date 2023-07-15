@@ -119,9 +119,9 @@ public class DishDetailController {
 
     @ApiOperation("查某一用户的菜品总金额")
     @PostMapping("/sumDishes")  //没写完
-    public Float sumDishes(@RequestBody Order order) {
+    public float sumDishes(@RequestBody Order order) {
         QueryWrapper<DishDetail> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("IFNULL(sum(money),0) as money")
+        queryWrapper.select("IFNULL(sum(money*number),0) as money")
                 .eq("account", order.getAccount());
         DishDetail detail = iDishDetailService.getOne(queryWrapper);
         return detail.getMoney();

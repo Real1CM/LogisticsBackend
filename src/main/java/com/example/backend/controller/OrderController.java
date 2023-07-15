@@ -105,6 +105,7 @@ public class OrderController {
     @ApiOperation("设置订单总金额") //没写完
     @GetMapping("/setSum")
     public void setSum(@RequestBody Order order){
-
+        float sum = new GoodsDetailController().sumGoods(order) +new DishDetailController().sumDishes(order);
+        order.setMoney(sum);
     }
 }
