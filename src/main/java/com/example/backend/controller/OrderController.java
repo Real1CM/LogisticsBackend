@@ -102,7 +102,7 @@ public class OrderController {
         return result.getRecords();
     }
 
-    @ApiOperation("设置订单总金额")
+    @ApiOperation("设置订单总金额") //没写完
     @GetMapping("/setSum")
     public void setSum(@RequestBody Order order){
 

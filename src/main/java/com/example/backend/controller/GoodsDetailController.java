@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -111,12 +112,12 @@ public class GoodsDetailController {
         return result.getRecords();
     }
 
-    @ApiOperation("查某一用户的商品总金额") //not yet
+    @ApiOperation("查某一用户的商品总金额")
     @PostMapping("/sumGoods")
-    public Float sumGoods(@RequestBody GoodsDetail goodsDetail) {
+    public float sumGoods(@RequestBody GoodsDetail goodsDetail) {
         QueryWrapper<GoodsDetail> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("IFNULL(sum(money),0) as money");
-        queryWrapper.like("account", goodsDetail.getAccount());
+        queryWrapper.eq("account", goodsDetail.getAccount());
+        queryWrapper.select("IFNULL(sum(money),0.0) as money");
         GoodsDetail detail = iGoodsDetailService.getOne(queryWrapper);
         return detail.getMoney();
     }

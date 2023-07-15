@@ -66,6 +66,7 @@ public class UserController {
     @ApiOperation("添加或修改用户信息")
     @PostMapping("/saveOrUpdateUser")
     public boolean saveOrUpdate(@RequestBody User user) {
+        user.setPswd(MD5utils.code(user.getPswd()));
         return iUserService.saveOrUpdate(user);
     }
 
@@ -73,9 +74,9 @@ public class UserController {
     @ApiOperation("修改用户信息")
     @PostMapping("/updateUser")
     public boolean update(@RequestBody User user) {
+        user.setPswd(MD5utils.code(user.getPswd()));
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("account", user.getAccount());
-
         return iUserService.update(user, updateWrapper);
     }
 
