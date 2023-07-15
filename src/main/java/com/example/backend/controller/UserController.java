@@ -85,7 +85,7 @@ public class UserController {
     @GetMapping("/selectUser")
     public List<User> select(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getUserName, user.getAccount());
+        lambdaQueryWrapper.like(User::getAccount, user.getAccount());
         return iUserService.list(lambdaQueryWrapper);
     }
 
