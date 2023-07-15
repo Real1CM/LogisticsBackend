@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 14/07/2023 14:27:28
+ Date: 15/07/2023 09:57:18
 */
 
 SET NAMES utf8mb4;
@@ -85,11 +85,13 @@ CREATE TABLE `goods_detail`  (
   PRIMARY KEY (`goods_detail_ID`) USING BTREE,
   INDEX `user_ID`(`account`) USING BTREE,
   INDEX `goods_ID`(`goods_ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods_detail
 -- ----------------------------
+INSERT INTO `goods_detail` VALUES (1, '2', 2, 1, 1, '已送达');
+INSERT INTO `goods_detail` VALUES (2, '2', 4, 3, 5, '已送达');
 
 -- ----------------------------
 -- Table structure for medical
@@ -129,19 +131,20 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order`  (
   `order_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户账户',
-  `dish_detail_ID` int(11) NOT NULL COMMENT '菜品明细ID',
-  `goods_detail_ID` int(11) NOT NULL COMMENT '商品明细ID',
-  `money` float NOT NULL COMMENT '总金额',
-  `data` date NOT NULL COMMENT '订单日期',
+  `dish_detail_ID` int(11) NULL DEFAULT NULL COMMENT '菜品明细ID',
+  `goods_detail_ID` int(11) NULL DEFAULT NULL COMMENT '商品明细ID',
+  `money` float NULL DEFAULT NULL COMMENT '总金额',
+  `data` date NULL DEFAULT NULL COMMENT '订单日期',
   PRIMARY KEY (`order_ID`) USING BTREE,
   INDEX `dish_detail_ID`(`dish_detail_ID`) USING BTREE,
   INDEX `goods_detail_ID`(`goods_detail_ID`) USING BTREE,
   INDEX `user_ID`(`account`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+INSERT INTO `order` VALUES (1, '2', 1, 1, 1, '2023-07-15');
 
 -- ----------------------------
 -- Table structure for reservation
@@ -180,7 +183,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '张三', '1234567890', '123456', '男', '12345674567', 1, NULL);
 INSERT INTO `user` VALUES (3, 'xiaomin2', '1234567892', 'passwo2rd', '女', '19186243797', 0, NULL);
-INSERT INTO `user` VALUES (5, 'xiaom5', '12345678967', '1a1dc91c907325c69271ddf0c944bc72', '男', '19186243797', 0, NULL);
+INSERT INTO `user` VALUES (5, 'xiaom5', '12345678967', 'c1572d05424d0ecb2a65ec6a82aeacbf', '男', '19186243797', 0, NULL);
 INSERT INTO `user` VALUES (6, 'xiaom6', '12345634967', '4b94c0ea58dc6f9ec69dfa78d8a937b1', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (7, 'xiaom7', '12375634967', '7e8859faa4b991719d1642a346eae3ee', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (8, 'xiam7', '12395634967', 'a51a7213a73f953fc958a4e73cee0c62', '男', '19186247797', 0, NULL);

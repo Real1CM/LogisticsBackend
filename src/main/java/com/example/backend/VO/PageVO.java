@@ -8,5 +8,6 @@ public class PageVO {
     private static int PAGE_NUM = 1; //开始时第几页
 
     public int pageSize = PAGE_SIZE;
-    private int pageNum = PAGE_NUM;
+    public int pageNum = PAGE_NUM;
+    public int dataSum;
 }

@@ -114,10 +114,10 @@ public class GoodsDetailController {
 
     @ApiOperation("查某一用户的商品总金额")
     @PostMapping("/sumGoods")
-    public float sumGoods(@RequestBody GoodsDetail goodsDetail) {
+    public float sumGoods(@RequestBody Order order) {
         QueryWrapper<GoodsDetail> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account", goodsDetail.getAccount());
-        queryWrapper.select("IFNULL(sum(money),0.0) as money");
+        queryWrapper.eq("account", order.getAccount());
+        queryWrapper.select("IFNULL(sum(money*number),0.0) as money");
         GoodsDetail detail = iGoodsDetailService.getOne(queryWrapper);
         return detail.getMoney();
     }

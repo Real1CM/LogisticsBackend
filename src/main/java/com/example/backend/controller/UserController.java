@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.IUserService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -82,10 +85,10 @@ public class UserController {
 
     //模糊查询
     @ApiOperation("模糊查询用户信息")
-    @GetMapping("/selectUser")
+    @PostMapping("/selectUser")
     public List<User> select(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getUserName, user.getUserName());
+        lambdaQueryWrapper.like(User::getAccount, user.getAccount());
         return iUserService.list(lambdaQueryWrapper);
     }
 
@@ -146,6 +149,8 @@ public class UserController {
     @ApiOperation("分页2")
     @PostMapping("/page")
     public List<User> page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iUserService.count());
+
         Page<User> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
