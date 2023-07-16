@@ -33,6 +33,10 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "单品金额")
     private String money;
 
+    @ApiModelProperty(value = "类别")
     private String goodsClass;
+
+    @ApiModelProperty(value = "图片")
+    private String goodsPicture;
 
 }
