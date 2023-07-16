@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 15/07/2023 09:57:18
+ Date: 16/07/2023 13:22:11
 */
 
 SET NAMES utf8mb4;
@@ -43,9 +43,7 @@ CREATE TABLE `dish_detail`  (
   `money` float NOT NULL COMMENT '金额',
   `number` int(11) NOT NULL COMMENT '数量',
   `status` enum('已送达','正在配送','正在出餐') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '1:已送达,2:正在配送,3:正在出餐',
-  PRIMARY KEY (`dish_detail_ID`) USING BTREE,
-  INDEX `user_ID`(`account`) USING BTREE,
-  INDEX `dish_ID`(`dish_ID`) USING BTREE
+  PRIMARY KEY (`dish_detail_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -64,6 +62,7 @@ CREATE TABLE `goods`  (
   `goods_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品ID',
   `goods_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名',
   `money` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '单品金额',
+  `goods_class` enum('医药','办公','食品','生鲜','日化') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类',
   PRIMARY KEY (`goods_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -82,9 +81,7 @@ CREATE TABLE `goods_detail`  (
   `money` float NOT NULL COMMENT '金额',
   `number` int(11) NOT NULL COMMENT '数量',
   `status` enum('已送达','正在配送','正在出餐') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '1:已送达,2:正在配送,3:正在出餐',
-  PRIMARY KEY (`goods_detail_ID`) USING BTREE,
-  INDEX `user_ID`(`account`) USING BTREE,
-  INDEX `goods_ID`(`goods_ID`) USING BTREE
+  PRIMARY KEY (`goods_detail_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -135,10 +132,7 @@ CREATE TABLE `order`  (
   `goods_detail_ID` int(11) NULL DEFAULT NULL COMMENT '商品明细ID',
   `money` float NULL DEFAULT NULL COMMENT '总金额',
   `data` date NULL DEFAULT NULL COMMENT '订单日期',
-  PRIMARY KEY (`order_ID`) USING BTREE,
-  INDEX `dish_detail_ID`(`dish_detail_ID`) USING BTREE,
-  INDEX `goods_detail_ID`(`goods_detail_ID`) USING BTREE,
-  INDEX `user_ID`(`account`) USING BTREE
+  PRIMARY KEY (`order_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -176,7 +170,7 @@ CREATE TABLE `user`  (
   `status` int(11) NULL DEFAULT NULL COMMENT '管理员0，其他用户1',
   `picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片网站',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
@@ -188,6 +182,7 @@ INSERT INTO `user` VALUES (6, 'xiaom6', '12345634967', '4b94c0ea58dc6f9ec69dfa78
 INSERT INTO `user` VALUES (7, 'xiaom7', '12375634967', '7e8859faa4b991719d1642a346eae3ee', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (8, 'xiam7', '12395634967', 'a51a7213a73f953fc958a4e73cee0c62', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (9, 'xiaomin123', '12345678967', 'c1572d05424d0ecb2a65ec6a82aeacbf', '男', '188271329842', 0, NULL);
+INSERT INTO `user` VALUES (10, 'lihua', '234567', 'e10adc3949ba59abbe56e057f20f883e', '男', '18827102345', 1, NULL);
 
 -- ----------------------------
 -- Table structure for visiting
