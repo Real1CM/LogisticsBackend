@@ -8,6 +8,7 @@ import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Goods;
 import com.example.backend.entity.User;
+import com.example.backend.mapper.GoodsMapper;
 import com.example.backend.service.IGoodsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,24 @@ public class GoodsController {
         page.setSize(pageVO.getPageSize());
         IPage<Goods> result = iGoodsService.page(page);
         return result.getRecords();
+    }
+
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @ApiOperation("返回所有数据!")
+    @GetMapping("/getAll")
+    public List<Goods> getAll() {
+        List<Goods> goods = goodsMapper.selectList(null);
+        return goods;
+    }
+
+    @ApiOperation("分类查询")
+    @PostMapping("/selectByClass")
+    public List<Goods> selectByClass(String goodsClass) {
+        LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Goods::getGoodsClass,goodsClass);
+        List<Goods> goods =goodsMapper.selectList(lambdaQueryWrapper);
+        return goods;
     }
 }
