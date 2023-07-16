@@ -108,10 +108,10 @@ public class GoodsController {
 
     @ApiOperation("分类查询")
     @PostMapping("/selectByClass")
-    public List<Goods> selectByClass(String goodsClass) {
+    public List<Goods> selectByClass(@RequestBody Goods goods) {
         LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Goods::getGoodsClass,goodsClass);
-        List<Goods> goods =goodsMapper.selectList(lambdaQueryWrapper);
-        return goods;
+        lambdaQueryWrapper.eq(Goods::getGoodsClass,goods.getGoodsClass());
+        List<Goods> good =goodsMapper.selectList(lambdaQueryWrapper);
+        return good;
     }
 }
