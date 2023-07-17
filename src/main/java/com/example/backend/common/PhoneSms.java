@@ -28,8 +28,8 @@ public class PhoneSms {
         com.aliyun.dysmsapi20170525.Client client = PhoneSms.createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName("阿里云短信测试")
-                .setTemplateCode("SMS_154950909")
-                .setPhoneNumbers("13986460729")
+                .setTemplateCode("SMS")
+                .setPhoneNumbers("phone")
                 .setTemplateParam("{\"code\":\"1234\"}");
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         try {
@@ -49,7 +49,7 @@ public class PhoneSms {
         com.aliyun.dysmsapi20170525.Client client = PhoneSms.createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName("阿里云短信测试")
-                .setTemplateCode("SMS_154950909")
+                .setTemplateCode("SMS")
                 .setPhoneNumbers(phone)
                 .setTemplateParam("{\"code\":\"1234\"}");
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
