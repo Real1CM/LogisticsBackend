@@ -132,7 +132,7 @@ public class UserController {
 
     @ApiOperation("前端请求数据")
     @PostMapping("/getUserMsg")
-    public List<User> getUserMsg(@RequestBody String account) {  //入参是一串账号号,比如12375634967
+    public List<User> getUserMsg(String account) {  //入参是一串账号号,比如12375634967
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccount, account);
         return iUserService.list(lambdaQueryWrapper);
