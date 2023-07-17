@@ -1,5 +1,9 @@
 package com.example.backend.controller;
 
+import com.aliyun.dysmsapi20170525.Client;
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.teaopenapi.models.Config;
+import com.example.backend.VO.PhoneLoginVO;
 import com.example.backend.entity.Admin;
 import com.example.backend.entity.LoginForm;
 import com.example.backend.entity.User;
@@ -11,6 +15,8 @@ import com.example.backend.util.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +45,88 @@ public class SystemController {
     private AdminService adminService;
     @Autowired
     private IUserService userService;
+
+    // 阿里云短信服务的配置信息
+    private static final String ACCESS_KEY_ID = "LTAI5tAXJbFawkk88QUF2ioL";
+    private static final String ACCESS_KEY_SECRET = "uYyjHPq8QoNAtKOGVgpoChOuS6HNyI";
+    private static final String ENDPOINT = "dysmsapi.aliyuncs.com";
+    private static final String REGION_ID = "cn-hangzhou";
+    private static final String SIGN_NAME = "阿里云短信测试";
+    private static final String TEMPLATE_CODE = "SMS_154950909";
+
+    // 生成指定长度的随机数字验证码
+    private static String generateVerificationCode(int length) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int digit = (int) (Math.random() * 10);
+            sb.append(digit);
+        }
+        return sb.toString();
+    }
+
+    // 发送短信验证码
+    private void sendVerificationCode(String phoneNumber) throws Exception {
+        // 生成验证码
+        String verificationCode = generateVerificationCode(6);
+
+        // 设置阿里云短信服务的配置
+        Config config = new Config()
+                .setAccessKeyId(ACCESS_KEY_ID)
+                .setAccessKeySecret(ACCESS_KEY_SECRET)
+                .setEndpoint(ENDPOINT)
+                .setRegionId(REGION_ID);
+
+        // 创建短信服务客户端
+        Client client = new Client(config);
+
+        // 创建短信发送请求
+        SendSmsRequest request = new SendSmsRequest()
+                .setPhoneNumbers(phoneNumber)
+                .setSignName(SIGN_NAME)
+                .setTemplateCode(TEMPLATE_CODE)
+                .setTemplateParam("{\"code\":\"" + verificationCode + "\"}");
+
+        try {
+            // 发送短信
+            client.sendSms(request);
+            System.out.println("验证码已发送到 " + phoneNumber);
+        } catch (Exception e) {
+            System.out.println("发送短信验证码失败：" + e.getMessage());
+        }
+    }
+
+    // 验证短信验证码
+    private boolean verifyCode(String inputCode, String expectedCode) {
+        return inputCode.equals(expectedCode);
+    }
+
+    @PostMapping("/phone-login")
+    public ResponseEntity<?> login(@RequestBody PhoneLoginVO phoneLoginVO) {
+        String phoneNumber = phoneLoginVO.getPhone(); // 获取用户手机号码
+
+        String expectedCode = null;
+        String receivedCode = phoneLoginVO.getVCode(); // 获取用户输入的验证码
+
+        try {
+            sendVerificationCode(phoneNumber);
+        } catch (Exception e) {
+            // 处理发送短信验证码失败的情况
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to send verification code: " + e.getMessage());
+        }
+
+        boolean isCodeValid = verifyCode(receivedCode, expectedCode);
+
+        if (isCodeValid) {
+            // 处理验证码验证通过的情况
+            return ResponseEntity.ok(phoneLoginVO);
+        } else {
+            // 处理验证码验证失败的情况
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid verification code");
+        }
+    }
+
 
     @ApiOperation("文件上传统一入口")
     @PostMapping("/headerImgUpload")
