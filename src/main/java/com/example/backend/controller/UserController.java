@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.AccountLoginVO;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.VO.UserMsgVO;
 import com.example.backend.common.MD5utils;
-import com.example.backend.entity.GoodsDetail;
+import com.example.backend.common.PhoneSms;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.IUserService;
@@ -19,10 +19,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -107,17 +105,17 @@ public class UserController {
         String d = (String) map.get("account");
         String e = (String) map.get("gender");
         String f = (String) map.get("phone");
-        String g =(String) map.get("picture");
+        String g = (String) map.get("picture");
         String h = (String) map.get("status");
 
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getUserId,a)
-                .like(User::getUserName,b)
+        lambdaQueryWrapper.like(User::getUserId, a)
+                .like(User::getUserName, b)
                 //.like(User::getPswd, new MD5utils().code(c))
                 .like(User::getAccount, d)
                 .like(User::getGender, e)
-                .like(User::getPhone,f)
-                .like(User::getPicture,g)
+                .like(User::getPhone, f)
+                .like(User::getPicture, g)
                 .like(User::getStatus, h);
 
         IPage res = iUserService.page(page, lambdaQueryWrapper);
@@ -158,5 +156,19 @@ public class UserController {
         IPage<User> result = iUserService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;
+    }
+
+    @ApiOperation("短信验证登录")
+    @PostMapping("/smsLogin")
+    public Boolean smsLogin(@RequestBody UserMsgVO userMsgVO) throws Exception {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getPhone, userMsgVO.getPhone());
+        User ok = userMapper.selectOne(lambdaQueryWrapper);
+        if(ok == null) return false;
+        PhoneSms.smsPhone(userMsgVO.getPhone());  //验证码只能发送1234这个码
+        if (userMsgVO.getCode() == "1234")
+            return true;
+        else
+            return false;
     }
 }
