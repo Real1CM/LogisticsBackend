@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Dish;
+import com.example.backend.entity.Goods;
 import com.example.backend.entity.User;
+import com.example.backend.mapper.DishMapper;
 import com.example.backend.service.IDishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,24 @@ public class DishController {
         page.setSize(pageVO.getPageSize());
         IPage<Dish> result = iDishService.page(page);
         return result.getRecords();
+    }
+
+    @Autowired
+    private DishMapper dishMapper;
+
+    @ApiOperation("返回所有数据!")
+    @GetMapping("/getAll")
+    public List<Dish> getAll() {
+        List<Dish> dishes = dishMapper.selectList(null);
+        return dishes;
+    }
+
+    @ApiOperation("分类查询")
+    @PostMapping("/selectByClass")
+    public List<Dish> selectByClass(@RequestBody Dish dish) {
+        LambdaQueryWrapper<Dish> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dish::getDishClass,dish.getDishClass());
+        List<Dish>  ok= dishMapper.selectList(lambdaQueryWrapper);
+        return ok;
     }
 }

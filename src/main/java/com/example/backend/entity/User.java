@@ -46,7 +46,7 @@ public class User implements Serializable {
     private String phone;
 
     @ApiModelProperty(value = "管理员0，其他用户1")
-    private String status;
+    private int status;
 
     @ApiModelProperty(value = "图片网站")
     private String picture;

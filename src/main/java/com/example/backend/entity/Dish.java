@@ -33,5 +33,7 @@ public class Dish implements Serializable {
     @ApiModelProperty(value = "单品金额")
     private String money;
 
+    @ApiModelProperty(value = "类别")
+    private String dishClass;
 
 }
