@@ -13,9 +13,9 @@ public class PhoneSms {
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
-                .setAccessKeyId("LTAI5tAXJbFawkk88QUF2ioL")
+                .setAccessKeyId("AccessKey")
                 // 必填，您的 AccessKey Secret
-                .setAccessKeySecret("uYyjHPq8QoNAtKOGVgpoChOuS6HNyI");
+                .setAccessKeySecret("AccessKeySecret");
         // 访问的域名
         config.endpoint = "dysmsapi.aliyuncs.com";
         return new com.aliyun.dysmsapi20170525.Client(config);
@@ -28,8 +28,8 @@ public class PhoneSms {
         com.aliyun.dysmsapi20170525.Client client = PhoneSms.createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName("阿里云短信测试")
-                .setTemplateCode("SMS_154950909")
-                .setPhoneNumbers("13986460729")
+                .setTemplateCode("SMS")
+                .setPhoneNumbers("phone")
                 .setTemplateParam("{\"code\":\"1234\"}");
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         try {
@@ -49,7 +49,7 @@ public class PhoneSms {
         com.aliyun.dysmsapi20170525.Client client = PhoneSms.createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName("阿里云短信测试")
-                .setTemplateCode("SMS_154950909")
+                .setTemplateCode("SMS")
                 .setPhoneNumbers(phone)
                 .setTemplateParam("{\"code\":\"1234\"}");
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();

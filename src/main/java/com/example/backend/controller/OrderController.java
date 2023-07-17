@@ -112,10 +112,9 @@ public class OrderController {
     @GetMapping("/setSum")
     public void setSum(@RequestBody Order order) {
         float sum = goodsDetailController.sumGoods(order) + dishDetailController.sumDishes(order);
-        order.setMoney(sum);
 
-        LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Order::getAccount,order.getAccount());
-        iOrderService.saveOrUpdate(order, lambdaQueryWrapper);
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("account", order.getAccount());
+        updateWrapper.set("money", sum);
     }
 }
