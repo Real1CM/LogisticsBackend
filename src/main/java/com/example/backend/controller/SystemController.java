@@ -65,7 +65,7 @@ public class SystemController {
     }
 
     // 发送短信验证码
-    private void sendVerificationCode(String phoneNumber) throws Exception {
+    private String sendVerificationCode(String phoneNumber) throws Exception {
         // 生成验证码
         String verificationCode = generateVerificationCode(6);
 
@@ -93,6 +93,8 @@ public class SystemController {
         } catch (Exception e) {
             System.out.println("发送短信验证码失败：" + e.getMessage());
         }
+
+        return verificationCode;
     }
 
     // 验证短信验证码
@@ -108,7 +110,7 @@ public class SystemController {
         String receivedCode = phoneLoginVO.getVCode(); // 获取用户输入的验证码
 
         try {
-            sendVerificationCode(phoneNumber);
+            expectedCode = sendVerificationCode(phoneNumber);
         } catch (Exception e) {
             // 处理发送短信验证码失败的情况
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
