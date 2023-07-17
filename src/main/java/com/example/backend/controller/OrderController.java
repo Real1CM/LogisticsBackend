@@ -110,11 +110,9 @@ public class OrderController {
 
     @ApiOperation("设置订单总金额") //没写完
     @GetMapping("/setSum")
-    public void setSum(@RequestBody Order order) {
+    public Boolean setSum(@RequestBody Order order) {
         float sum = goodsDetailController.sumGoods(order) + dishDetailController.sumDishes(order);
-
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("account", order.getAccount());
-        updateWrapper.set("money", sum);
+        order.setMoney(sum);
+        return iOrderService.save(order);
     }
 }

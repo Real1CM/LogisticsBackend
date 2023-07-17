@@ -36,4 +36,7 @@ public class Dish implements Serializable {
     @ApiModelProperty(value = "类别")
     private String dishClass;
 
+    @ApiModelProperty(value = "图片")
+    private String picture;
+
 }
