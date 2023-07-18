@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.backend.entity.User;
+import com.example.backend.VO.PhoneLoginVO;
 import com.example.backend.entity.VCode;
 import com.example.backend.service.IVCodeService;
 import io.swagger.annotations.Api;
@@ -36,11 +35,9 @@ public class VCodeController {
         return ivCodeService.saveOrUpdate(vCode);
     }
 
-    @ApiOperation("验证, 入参account其实是指的电话号码,对应v_code表的phone字段,验证完了就删了下次还能在验证")
-    @DeleteMapping("/vertify")
-    public Boolean vertify(String vcode) {
-        QueryWrapper<VCode> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("v_cod", vcode);
-        return ivCodeService.remove(queryWrapper);
+    @ApiOperation("验证, 入参account其实是指的电话号码,对应v_code表的phone字段,验证完了就删了下次还能在验证,看注释")
+    @PostMapping("/checkCode")
+    public Boolean checkCode(@RequestBody PhoneLoginVO phoneLoginVO) {
+        return ivCodeService.checkCode(phoneLoginVO);  //删除封装到service里面了,传的是phoneLoginVO
     }
 }

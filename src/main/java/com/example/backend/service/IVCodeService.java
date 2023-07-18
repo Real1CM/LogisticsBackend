@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.VO.PhoneLoginVO;
 import com.example.backend.entity.VCode;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IVCodeService extends IService<VCode> {
 
+    Boolean checkCode(PhoneLoginVO phoneLoginVO);
 }
