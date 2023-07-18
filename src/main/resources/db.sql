@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 17/07/2023 14:20:06
+ Date: 18/07/2023 17:08:28
 */
 
 SET NAMES utf8mb4;
@@ -26,12 +26,14 @@ CREATE TABLE `dish`  (
   `dish_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜品名',
   `money` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '单品金额',
   `dish_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品类别',
+  `picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片url',
   PRIMARY KEY (`dish_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dish
 -- ----------------------------
+INSERT INTO `dish` VALUES (1, 'xiaomin', '2', '1', NULL);
 
 -- ----------------------------
 -- Table structure for dish_detail
@@ -134,14 +136,14 @@ CREATE TABLE `order`  (
   `dish_detail_ID` int(11) NULL DEFAULT NULL COMMENT '菜品明细ID',
   `goods_detail_ID` int(11) NULL DEFAULT NULL COMMENT '商品明细ID',
   `money` float NULL DEFAULT NULL COMMENT '总金额',
-  `data` date NULL DEFAULT NULL COMMENT '订单日期',
+  `order_date` date NULL DEFAULT NULL COMMENT '订单日期',
   PRIMARY KEY (`order_ID`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-INSERT INTO `order` VALUES (1, '2', 1, 1, 1, '2023-07-15');
+INSERT INTO `order` VALUES (1, '2', 1, 1, 30.7, '2023-07-15');
 
 -- ----------------------------
 -- Table structure for reservation
@@ -186,6 +188,21 @@ INSERT INTO `user` VALUES (7, 'xiaom7', '12375634967', '7e8859faa4b991719d1642a3
 INSERT INTO `user` VALUES (8, 'xiam7', '12395634967', 'a51a7213a73f953fc958a4e73cee0c62', '男', '19186247797', 0, NULL);
 INSERT INTO `user` VALUES (9, 'xiaomin123', '12345678967', 'c1572d05424d0ecb2a65ec6a82aeacbf', '男', '188271329842', 0, NULL);
 INSERT INTO `user` VALUES (10, 'lihua', '234567', 'e10adc3949ba59abbe56e057f20f883e', '男', '18827102345', 1, NULL);
+
+-- ----------------------------
+-- Table structure for v_code
+-- ----------------------------
+DROP TABLE IF EXISTS `v_code`;
+CREATE TABLE `v_code`  (
+  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户',
+  `v_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '验证码',
+  PRIMARY KEY (`phone`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of v_code
+-- ----------------------------
+INSERT INTO `v_code` VALUES ('19186243797', '379972');
 
 -- ----------------------------
 -- Table structure for visiting
