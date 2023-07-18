@@ -154,15 +154,4 @@ public class UserController {
         pageVO.setData(result.getRecords());
         return pageVO;
     }
-
-    @Autowired
-    private SystemController systemController;
-
-    @ApiOperation("短信验证登录")
-    @PostMapping("/smsLogin")
-    public String smsLogin(@RequestBody PhoneLoginVO phoneLoginVO) throws Exception {
-        if(phoneLoginVO.getVCode() == null)
-            systemController.sendVerificationCode(phoneLoginVO.getPhone());
-        return null;
-    }
 }
