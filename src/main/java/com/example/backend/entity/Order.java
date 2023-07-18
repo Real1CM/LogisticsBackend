@@ -42,10 +42,12 @@ public class Order implements Serializable {
     private Integer goodsDetailId;
 
     @ApiModelProperty(value = "总金额")
+    @TableField("money")
     private float money;
 
     @ApiModelProperty(value = "订单日期")
-    private LocalDate data;
+    @TableField("order_date")
+    private LocalDate orderDate;
 
 
 }

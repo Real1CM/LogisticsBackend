@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Order;
-import com.example.backend.entity.User;
+import com.example.backend.mapper.OrderMapper;
 import com.example.backend.service.IOrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class OrderController {
                 .like(Order::getDishDetailId, c)
                 .like(Order::getGoodsDetailId, d)
                 .like(Order::getMoney, e)
-                .like(Order::getData, f);
+                .like(Order::getOrderDate, f);
 
         IPage res = iOrderService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());
@@ -107,12 +107,18 @@ public class OrderController {
     private GoodsDetailController goodsDetailController;
     @Autowired
     private DishDetailController dishDetailController;
+    @Autowired
+    private OrderMapper orderMapper;
 
-    @ApiOperation("设置订单总金额") //没写完
-    @GetMapping("/setSum")
+    @ApiOperation("设置订单总金额") // done
+    @PostMapping("/setSum")
     public Boolean setSum(@RequestBody Order order) {
         float sum = goodsDetailController.sumGoods(order) + dishDetailController.sumDishes(order);
         order.setMoney(sum);
-        return iOrderService.save(order);
+
+        /*UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("account", order.getAccount())
+                .set("money", order.getMoney());*/
+        return orderMapper.updateByAccount(order);
     }
 }
