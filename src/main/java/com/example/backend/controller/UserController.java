@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.backend.VO.AccountLoginVO;
-import com.example.backend.VO.PageVO;
-import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.VO.UserMsgVO;
+import com.example.backend.VO.*;
 import com.example.backend.common.MD5utils;
 import com.example.backend.common.PhoneSms;
 import com.example.backend.entity.User;
@@ -158,17 +155,14 @@ public class UserController {
         return pageVO;
     }
 
+    @Autowired
+    private SystemController systemController;
+
     @ApiOperation("短信验证登录")
     @PostMapping("/smsLogin")
-    public Boolean smsLogin(@RequestBody UserMsgVO userMsgVO) throws Exception {
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getPhone, userMsgVO.getPhone());
-        User ok = userMapper.selectOne(lambdaQueryWrapper);
-        if(ok == null) return false;
-        PhoneSms.smsPhone(userMsgVO.getPhone());  //验证码只能发送1234这个码
-        if (userMsgVO.getCode() == "1234")
-            return true;
-        else
-            return false;
+    public String smsLogin(@RequestBody PhoneLoginVO phoneLoginVO) throws Exception {
+        if(phoneLoginVO.getVCode() == null)
+            systemController.sendVerificationCode(phoneLoginVO.getPhone());
+        return null;
     }
 }

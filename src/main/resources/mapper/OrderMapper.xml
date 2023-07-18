@@ -11,4 +11,8 @@
     <select id="selectMyPage" resultType="com.example.backend.entity.Order">
         SELECT * FROM `order`
     </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM `order`
+    </select>
 </mapper>

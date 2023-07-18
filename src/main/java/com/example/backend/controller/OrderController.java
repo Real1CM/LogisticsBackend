@@ -130,6 +130,7 @@ public class OrderController {
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<Order> result = orderMapper.selectMyPage(page);
+        pageVO.setDataSum(orderMapper.countAll());
         pageVO.setData(result.getRecords());
         return pageVO;
     }

@@ -103,6 +103,7 @@ public class ReservationController {
         Page<Reservation> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
+        pageVO.setDataSum(iReservationService.count());
         IPage<Reservation> result = iReservationService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;

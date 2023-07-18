@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author liang-chenming
@@ -19,4 +19,6 @@ public interface OrderMapper extends BaseMapper<Order> {
     Boolean updateByAccount(@Param("u") Order order);
 
     IPage<Order> selectMyPage(IPage<Order> page);
+
+    int countAll();
 }

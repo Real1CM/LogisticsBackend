@@ -65,7 +65,7 @@ public class SystemController {
     }
 
     // 发送短信验证码
-    private String sendVerificationCode(String phoneNumber) throws Exception {
+    public String sendVerificationCode(String phoneNumber) throws Exception {
         // 生成验证码
         String verificationCode = generateVerificationCode(6);
 
@@ -98,7 +98,7 @@ public class SystemController {
     }
 
     // 验证短信验证码
-    private boolean verifyCode(String inputCode, String expectedCode) {
+    public boolean verifyCode(String inputCode, String expectedCode) {
         return inputCode.equals(expectedCode);
     }
 
