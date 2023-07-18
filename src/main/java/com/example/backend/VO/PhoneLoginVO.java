@@ -7,5 +7,4 @@ public class PhoneLoginVO {
     private String Phone;
     private String vCode;
     private String status = "成功";
-
 }

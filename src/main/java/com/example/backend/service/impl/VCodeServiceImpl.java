@@ -21,13 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class VCodeServiceImpl extends ServiceImpl<VCodeMapper, VCode> implements IVCodeService {
 
     @Override
-    public Boolean checkCode(PhoneLoginVO phoneLoginVO) {
+    public Boolean checkCode(VCode vCode) {
         QueryWrapper<VCode> queryWrapper =new QueryWrapper<>();
-        queryWrapper.eq("phone", phoneLoginVO.getPhone())
-                .eq("v_cod",phoneLoginVO.getVCode());
-        VCode vCode = baseMapper.selectOne(queryWrapper);
-        if(vCode == null) {
-            phoneLoginVO.setStatus("验证码错误");
+        queryWrapper.eq("phone", vCode.getAccount())
+                .eq("v_cod",vCode.getVCod());
+        VCode vCode1 = baseMapper.selectOne(queryWrapper);
+        if(vCode1 == null) {
             return false;
         }
         baseMapper.delete(queryWrapper);

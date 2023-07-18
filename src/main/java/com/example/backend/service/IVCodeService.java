@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IVCodeService extends IService<VCode> {
 
-    Boolean checkCode(PhoneLoginVO phoneLoginVO);
+    Boolean checkCode(VCode vCode);
 }
