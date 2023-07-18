@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-18
  */
 public interface IVCodeService extends IService<VCode> {
-    Boolean vertify(VCode vCode);
+
 }

@@ -6,6 +6,7 @@ import com.example.backend.mapper.VCodeMapper;
 import com.example.backend.service.IVCodeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -16,14 +17,7 @@ import org.springframework.stereotype.Service;
  * @since 2023-07-18
  */
 @Service
+@Transactional
 public class VCodeServiceImpl extends ServiceImpl<VCodeMapper, VCode> implements IVCodeService {
-    @Override
-    public Boolean vertify(VCode vCode) {
-        QueryWrapper<VCode> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone", vCode.getAccount());
-        VCode the = baseMapper.selectOne(queryWrapper);
-        if(vCode.getVCode() == the.getVCode())
-            return true;
-        return null;
-    }
+
 }

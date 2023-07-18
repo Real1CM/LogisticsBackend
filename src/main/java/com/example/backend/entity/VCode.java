@@ -28,6 +28,7 @@ public class VCode implements Serializable {
     private String account;
 
     @ApiModelProperty(value = "验证码")
+    @TableField("v_cod")
     private String vCode;
 
 

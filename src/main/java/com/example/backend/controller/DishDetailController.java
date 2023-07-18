@@ -109,7 +109,7 @@ public class DishDetailController {
         return result.getRecords();
     }
 
-    @ApiOperation("根据Order表里的userId找到全部dish_detail")
+    @ApiOperation("根据Order表里的账户找到全部dish_detail")
     @PostMapping("/getAllDetail")
     public List<DishDetail> getAllDetail(@RequestBody Order order) {
         LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
