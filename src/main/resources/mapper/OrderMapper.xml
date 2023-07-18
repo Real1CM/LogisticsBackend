@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.backend.mapper.OrderMapper">
 
-    <update id="updateByAccount" parameterType="com.example.backend.entity.Order" >
-        update `order` set money = #{u.money} where account = #{u.account}
+    <update id="updateByAccount" parameterType="com.example.backend.entity.Order">
+        update `order`
+        set money = #{u.money}
+        where account = #{u.account}
     </update>
+
+    <select id="selectMyPage" resultType="com.example.backend.entity.Order">
+        SELECT * FROM `order`
+    </select>
 </mapper>

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.service.IOrderService;
@@ -120,5 +121,16 @@ public class OrderController {
         updateWrapper.eq("account", order.getAccount())
                 .set("money", order.getMoney());*/
         return orderMapper.updateByAccount(order);
+    }
+
+    @ApiOperation("分页3")
+    @PostMapping("/page3")
+    public PageVO page3(@RequestBody PageVO pageVO) {
+        Page<Order> page = new Page<>();
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
+        IPage<Order> result = orderMapper.selectMyPage(page);
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }

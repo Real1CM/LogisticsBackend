@@ -3,13 +3,10 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Reservation;
-import com.example.backend.entity.User;
-import com.example.backend.entity.Visitingschedule;
 import com.example.backend.service.IReservationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +95,16 @@ public class ReservationController {
         page.setSize(pageVO.getPageSize());
         IPage<Reservation> result = iReservationService.page(page);
         return result.getRecords();
+    }
+
+    @ApiOperation("分页3")
+    @PostMapping("/page3")
+    public PageVO page3(@RequestBody PageVO pageVO) {
+        Page<Reservation> page = new Page<>();
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
+        IPage<Reservation> result = iReservationService.page(page);
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }
