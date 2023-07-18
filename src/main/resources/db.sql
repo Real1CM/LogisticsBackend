@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 18/07/2023 20:00:43
+ Date: 18/07/2023 22:44:42
 */
 
 SET NAMES utf8mb4;
@@ -194,14 +194,16 @@ INSERT INTO `user` VALUES (10, 'lihua', '234567', 'e10adc3949ba59abbe56e057f20f8
 -- ----------------------------
 DROP TABLE IF EXISTS `v_code`;
 CREATE TABLE `v_code`  (
-  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户',
+  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账户',
   `v_cod` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '验证码',
-  PRIMARY KEY (`phone`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '没有什么意义的主键',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of v_code
 -- ----------------------------
+INSERT INTO `v_code` VALUES (NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for visiting
