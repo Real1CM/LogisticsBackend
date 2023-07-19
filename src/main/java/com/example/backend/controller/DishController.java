@@ -55,7 +55,7 @@ public class DishController {
     }
 
     @ApiOperation("查询菜品信息")
-    @GetMapping("/selectDish")
+    @PostMapping("/selectDish")
     public List<Dish> select(@RequestBody Dish dish) {
         LambdaQueryWrapper<Dish> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Dish::getDishName, dish.getDishName());

@@ -54,7 +54,7 @@ public class UserController {
     //删
     @ApiOperation("删除用户信息")
     @DeleteMapping("/removeUser")
-    public boolean remove(User user) {
+    public boolean remove(@RequestBody User user) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("account", user.getAccount());
         return iUserService.remove(queryWrapper);

@@ -57,7 +57,7 @@ public class GoodsController {
     }
 
     @ApiOperation("查询商品信息")
-    @GetMapping("/selectGoods")
+    @PostMapping("/selectGoods")
     public List<Goods> select(@RequestBody Goods goods) {
         LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goods::getGoodsName, goods.getGoodsName());
