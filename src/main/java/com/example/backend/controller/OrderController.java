@@ -62,7 +62,7 @@ public class OrderController {
     }
 
     @ApiOperation("查询订单信息")
-    @GetMapping("/selectOrder")
+    @PostMapping("/selectOrder")
     public Order select(@RequestBody Order order) {
         return orderMapper.selectBythis(order);
     }

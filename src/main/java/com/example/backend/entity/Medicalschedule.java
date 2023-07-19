@@ -36,5 +36,8 @@ public class Medicalschedule implements Serializable {
     @TableField("Time")
     private LocalDate time;
 
+    @ApiModelProperty(value = "电话号码")
+    @TableField("phone")
+    private String phone;
 
 }

@@ -34,7 +34,11 @@ public class Visitingschedule implements Serializable {
     private String visitingId;
 
     @ApiModelProperty(value = "基地时间")
+    @TableField("time")
     private LocalDate time;
 
+    @ApiModelProperty(value = "电话号码")
+    @TableField("phone")
+    private String phone;
 
 }
