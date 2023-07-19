@@ -11,6 +11,7 @@ import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.DishDetailMapper;
+import com.example.backend.mapper.GoodsDetailMapper;
 import com.example.backend.service.IDishDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -118,12 +119,22 @@ public class DishDetailController {
     }
 
     @ApiOperation("查某一用户的菜品总金额")
-    @PostMapping("/sumDishes")  //没写完
+    @PostMapping("/sumDishes")
     public float sumDishes(@RequestBody Order order) {
         QueryWrapper<DishDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("IFNULL(sum(money*number),0) as money")
                 .eq("account", order.getAccount());
         DishDetail detail = iDishDetailService.getOne(queryWrapper);
         return detail.getMoney();
+    }
+
+    @Autowired
+    private DishDetailMapper dishDetailMapper;
+    @ApiOperation("根据订单中的菜品id字段查询菜品明细信息")
+    @PostMapping("/selectByOrder")
+    public List<DishDetail> selectByDetail(@RequestBody Order order) {
+        LambdaQueryWrapper<DishDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(DishDetail::getDishDetailId, order.getDishDetailId());
+        return dishDetailMapper.selectList(lambdaQueryWrapper);
     }
 }

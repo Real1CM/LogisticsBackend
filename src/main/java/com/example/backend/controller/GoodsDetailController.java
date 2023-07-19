@@ -7,9 +7,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.Goods;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
+import com.example.backend.mapper.GoodsDetailMapper;
 import com.example.backend.service.IGoodsDetailService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -120,5 +123,15 @@ public class GoodsDetailController {
         queryWrapper.select("IFNULL(sum(money*number),0.0) as money");
         GoodsDetail detail = iGoodsDetailService.getOne(queryWrapper);
         return detail.getMoney();
+    }
+
+    @Autowired
+    private GoodsDetailMapper goodsDetailMapper;
+    @ApiOperation("根据订单中的商品id字段查询商品明细信息")
+    @PostMapping("/selectByOrder")
+    public List<GoodsDetail> selectByDetail(@RequestBody Order order) {
+        LambdaQueryWrapper<GoodsDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(GoodsDetail::getGoodsDetailId, order.getGoodsDetailId());
+        return goodsDetailMapper.selectList(lambdaQueryWrapper);
     }
 }

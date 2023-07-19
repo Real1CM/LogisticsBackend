@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,6 +41,7 @@ public class Order implements Serializable {
 
     @ApiModelProperty(value = "商品明细ID")
     @TableField("goods_detail_ID")
+    @JsonProperty("goodsDetailId")
     private Integer goodsDetailId;
 
     @ApiModelProperty(value = "总金额")

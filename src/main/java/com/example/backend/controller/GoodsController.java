@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Goods;
-import com.example.backend.entity.User;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.mapper.GoodsMapper;
 import com.example.backend.service.IGoodsService;
 import io.swagger.annotations.ApiOperation;
@@ -113,5 +113,13 @@ public class GoodsController {
         lambdaQueryWrapper.eq(Goods::getGoodsClass,goods.getGoodsClass());
         List<Goods> good =goodsMapper.selectList(lambdaQueryWrapper);
         return good;
+    }
+
+    @ApiOperation("根据商品明细中的商品id字段查询商品信息")
+    @PostMapping("/selectByDetail")
+    public Goods selectByDetail(@RequestBody GoodsDetail goodsDetail) {
+        LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Goods::getGoodsId, goodsDetail.getGoodsId());
+        return goodsMapper.selectOne(lambdaQueryWrapper);
     }
 }

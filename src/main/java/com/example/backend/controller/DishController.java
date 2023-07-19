@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.entity.Dish;
+import com.example.backend.entity.DishDetail;
+import com.example.backend.entity.Goods;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.mapper.DishMapper;
 import com.example.backend.service.IDishService;
 import io.swagger.annotations.ApiOperation;
@@ -112,5 +115,13 @@ public class DishController {
         lambdaQueryWrapper.eq(Dish::getDishClass,dish.getDishClass());
         List<Dish>  ok= dishMapper.selectList(lambdaQueryWrapper);
         return ok;
+    }
+
+    @ApiOperation("根据菜品明细中的菜品id字段查询菜品信息")
+    @PostMapping("/selectByDetail")
+    public Dish selectByDetail(@RequestBody DishDetail dishDetail) {
+        LambdaQueryWrapper<Dish> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dish::getDishId, dishDetail.getDishId());
+        return dishMapper.selectOne(lambdaQueryWrapper);
     }
 }
