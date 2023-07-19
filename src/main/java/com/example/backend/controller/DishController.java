@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.Dish;
-import com.example.backend.entity.DishDetail;
-import com.example.backend.entity.Goods;
-import com.example.backend.entity.GoodsDetail;
+import com.example.backend.entity.*;
 import com.example.backend.mapper.DishMapper;
 import com.example.backend.service.IDishService;
 import io.swagger.annotations.ApiOperation;
@@ -90,12 +87,14 @@ public class DishController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Dish> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iDishService.count());
         Page<Dish> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<Dish> result = iDishService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 
     @Autowired

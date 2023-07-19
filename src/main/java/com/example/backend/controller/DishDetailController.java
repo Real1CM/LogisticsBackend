@@ -5,11 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.DishDetail;
-import com.example.backend.entity.GoodsDetail;
-import com.example.backend.entity.Order;
-import com.example.backend.entity.User;
+import com.example.backend.entity.*;
 import com.example.backend.mapper.DishDetailMapper;
 import com.example.backend.mapper.GoodsDetailMapper;
 import com.example.backend.service.IDishDetailService;
@@ -102,12 +100,14 @@ public class DishDetailController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<DishDetail> page(int size, int num) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iDishDetailService.count());
         Page<DishDetail> page = new Page<>();
-        page.setCurrent(num);
-        page.setSize(size);
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
         IPage<DishDetail> result = iDishDetailService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 
     @ApiOperation("根据Order表里的账户找到全部dish_detail")

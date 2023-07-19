@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.DishDetail;
 import com.example.backend.entity.Goods;
 import com.example.backend.entity.GoodsDetail;
 import com.example.backend.mapper.GoodsMapper;
@@ -88,12 +89,14 @@ public class GoodsController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Goods> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iGoodsService.count());
         Page<Goods> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<Goods> result = iGoodsService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 
     @Autowired

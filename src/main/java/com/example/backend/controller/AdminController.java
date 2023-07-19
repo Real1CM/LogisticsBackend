@@ -3,9 +3,11 @@ package com.example.backend.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
 import com.example.backend.common.MD5utils;
 import com.example.backend.entity.Admin;
+import com.example.backend.entity.Dish;
 import com.example.backend.service.AdminService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +85,17 @@ public class AdminController {
         System.out.println(res.getTotal());
 
         return res.getRecords();
+    }
+
+    @ApiOperation("分页2")
+    @PostMapping("/page")
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(adminService.count());
+        Page<Admin> page = new Page<>();
+        page.setCurrent(pageVO.getPageNum());
+        page.setSize(pageVO.getPageSize());
+        IPage<Admin> result = adminService.page(page);
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }

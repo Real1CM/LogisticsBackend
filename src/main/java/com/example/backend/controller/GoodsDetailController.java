@@ -107,12 +107,14 @@ public class GoodsDetailController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<GoodsDetail> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iGoodsDetailService.count());
         Page<GoodsDetail> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<GoodsDetail> result = iGoodsDetailService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 
     @ApiOperation("查某一用户的商品总金额")

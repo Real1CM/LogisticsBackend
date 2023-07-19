@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.Medical;
 import com.example.backend.entity.Medicalschedule;
 import com.example.backend.entity.User;
 import com.example.backend.service.IMedicalscheduleService;
@@ -88,11 +89,13 @@ public class MedicalscheduleController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Medicalschedule> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iMedicalscheduleService.count());
         Page<Medicalschedule> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<Medicalschedule> result = iMedicalscheduleService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Medical;
 import com.example.backend.entity.User;
 import com.example.backend.service.IMedicalService;
@@ -88,11 +89,13 @@ public class MedicalController {
 
     @ApiOperation("分页2")
     @PostMapping("/page")
-    public List<Medical> page(@RequestBody PageVO pageVO) {
+    public PageVO page(@RequestBody PageVO pageVO) {
+        pageVO.setDataSum(iMedicalService.count());
         Page<Medical> page = new Page<>();
         page.setCurrent(pageVO.getPageNum());
         page.setSize(pageVO.getPageSize());
         IPage<Medical> result = iMedicalService.page(page);
-        return result.getRecords();
+        pageVO.setData(result.getRecords());
+        return pageVO;
     }
 }
