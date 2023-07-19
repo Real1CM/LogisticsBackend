@@ -154,4 +154,12 @@ public class UserController {
         pageVO.setData(result.getRecords());
         return pageVO;
     }
+
+    @ApiOperation("用电话查询用户信息")
+    @PostMapping("/selectByPhone")
+    public User selectByPhone(@RequestBody User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getPhone, user.getPhone());
+        return iUserService.getOne(lambdaQueryWrapper);
+    }
 }
