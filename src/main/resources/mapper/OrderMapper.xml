@@ -15,4 +15,7 @@
     <select id="countAll" resultType="int">
         SELECT COUNT(*) FROM `order`
     </select>
+    <select id="selectBythis" resultType="com.example.backend.entity.Order">
+        SELECT * FROM `order` where order_ID = #{u.orderId}
+    </select>
 </mapper>

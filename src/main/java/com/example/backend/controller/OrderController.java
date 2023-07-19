@@ -2,12 +2,10 @@ package com.example.backend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.GoodsDetail;
 import com.example.backend.entity.Order;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.service.IOrderService;
@@ -32,6 +30,12 @@ public class OrderController {
 
     @Autowired
     private IOrderService iOrderService;
+    @Autowired
+    private GoodsDetailController goodsDetailController;
+    @Autowired
+    private DishDetailController dishDetailController;
+    @Autowired
+    private OrderMapper orderMapper;
 
     @ApiOperation("添加订单信息")
     @PostMapping("/saveOrder")
@@ -59,10 +63,8 @@ public class OrderController {
 
     @ApiOperation("查询订单信息")
     @GetMapping("/selectOrder")
-    public List<Order> select(@RequestBody Order order) {
-        LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Order::getOrderId, order.getOrderId());
-        return iOrderService.list(lambdaQueryWrapper);
+    public Order select(@RequestBody Order order) {
+        return orderMapper.selectBythis(order);
     }
 
     @ApiOperation("订单的分页功能")
@@ -103,13 +105,6 @@ public class OrderController {
         IPage<Order> result = iOrderService.page(page);
         return result.getRecords();
     }
-
-    @Autowired
-    private GoodsDetailController goodsDetailController;
-    @Autowired
-    private DishDetailController dishDetailController;
-    @Autowired
-    private OrderMapper orderMapper;
 
     @ApiOperation("设置订单总金额") // done
     @PostMapping("/setSum")

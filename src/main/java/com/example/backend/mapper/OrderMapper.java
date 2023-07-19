@@ -21,4 +21,6 @@ public interface OrderMapper extends BaseMapper<Order> {
     IPage<Order> selectMyPage(IPage<Order> page);
 
     int countAll();
+
+    Order selectBythis(@Param("u") Order order);
 }
