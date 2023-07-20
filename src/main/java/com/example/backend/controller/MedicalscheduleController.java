@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.Medical;
-import com.example.backend.entity.Medicalschedule;
-import com.example.backend.entity.User;
+import com.example.backend.entity.*;
+import com.example.backend.mapper.MedicalscheduleMapper;
+import com.example.backend.mapper.VisitingscheduleMapper;
 import com.example.backend.service.IMedicalscheduleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +97,19 @@ public class MedicalscheduleController {
         IPage<Medicalschedule> result = iMedicalscheduleService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;
+    }
+
+    @Autowired
+    private MedicalController medicalController;
+    @Autowired
+    private MedicalscheduleMapper medicalscheduleMapper;
+
+    @ApiOperation("根据预订查时间")
+    @PostMapping("/selectTime")
+    public Medicalschedule selectTime(@RequestBody Reservation reservation) {
+        Medical medical = medicalController.selectByRe(reservation);
+        LambdaQueryWrapper<Medicalschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Medicalschedule::getMedicalScheduleId, medical.getMedicalScheduleId());
+        return medicalscheduleMapper.selectOne(lambdaQueryWrapper);
     }
 }

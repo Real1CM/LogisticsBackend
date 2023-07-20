@@ -6,9 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.Dish;
-import com.example.backend.entity.User;
-import com.example.backend.entity.Visiting;
+import com.example.backend.entity.*;
+import com.example.backend.mapper.VisitingMapper;
 import com.example.backend.service.IVisitingService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +96,16 @@ public class VisitingController {
         IPage<Visiting> result = iVisitingService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;
+    }
+
+    @Autowired
+    private VisitingMapper visitingMapper;
+
+    @ApiOperation("根据预订中的基地id字段查询visiting信息")
+    @PostMapping("/selectByRe")
+    public Visiting selectByRe(@RequestBody Reservation reservation) {
+        LambdaQueryWrapper<Visiting> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Visiting::getVisitingId, reservation.getVisitingId());
+        return visitingMapper.selectOne(lambdaQueryWrapper);
     }
 }

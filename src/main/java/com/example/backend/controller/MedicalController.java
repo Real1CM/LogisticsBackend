@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.GoodsDetail;
-import com.example.backend.entity.Medical;
-import com.example.backend.entity.User;
+import com.example.backend.entity.*;
+import com.example.backend.mapper.MedicalMapper;
+import com.example.backend.mapper.VisitingMapper;
 import com.example.backend.service.IMedicalService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,7 @@ public class MedicalController {
         LambdaQueryWrapper<Medical> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Medical::getMedicalId,a)
                 .like(Medical::getMedicalName,b)
-                .like(Medical::getMedicalTimeId,c);
+                .like(Medical::getMedicalScheduleId,c);
 
         IPage res = iMedicalService.page(page,lambdaQueryWrapper);
         System.out.println(res.getTotal());
@@ -97,5 +97,16 @@ public class MedicalController {
         IPage<Medical> result = iMedicalService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;
+    }
+
+    @Autowired
+    private MedicalMapper medicalMapper;
+
+    @ApiOperation("根据预订中的基地id字段查询医疗信息")
+    @PostMapping("/selectByRe")
+    public Medical selectByRe(@RequestBody Reservation reservation) {
+        LambdaQueryWrapper<Medical> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Medical::getMedicalId, reservation.getMedicalId());
+        return medicalMapper.selectOne(lambdaQueryWrapper);
     }
 }

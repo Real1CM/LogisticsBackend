@@ -2,6 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.entity.Visitingschedule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author liang-chenming
  * @since 2023-07-07
  */
+@Repository
 public interface VisitingscheduleMapper extends BaseMapper<Visitingschedule> {
 
 }

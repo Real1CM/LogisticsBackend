@@ -32,8 +32,8 @@ public class Medical implements Serializable {
     private String medicalName;
 
     @ApiModelProperty(value = "医疗服务时间ID")
-    @TableField("medical_time_ID")
-    private Integer medicalTimeId;
+    @TableField("medical_schedule_ID")
+    private Integer medicalScheduleId;
 
 
 }

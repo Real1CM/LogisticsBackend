@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
+import com.example.backend.entity.Reservation;
 import com.example.backend.entity.User;
 import com.example.backend.entity.Visiting;
 import com.example.backend.entity.Visitingschedule;
+import com.example.backend.mapper.VisitingscheduleMapper;
 import com.example.backend.service.IVisitingscheduleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +99,19 @@ public class VisitingscheduleController {
         IPage<Visitingschedule> result = iVisitingscheduleService.page(page);
         pageVO.setData(result.getRecords());
         return pageVO;
+    }
+
+    @Autowired
+    private VisitingController visitingController;
+    @Autowired
+    private VisitingscheduleMapper visitingscheduleMapper;
+
+    @ApiOperation("根据预订查时间")
+    @PostMapping("/selectTime")
+    public Visitingschedule selectTime(@RequestBody Reservation reservation) {
+        Visiting visiting = visitingController.selectByRe(reservation);
+        LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Visitingschedule::getVisitingId, visiting.getVisitingId());
+        return visitingscheduleMapper.selectOne(lambdaQueryWrapper);
     }
 }

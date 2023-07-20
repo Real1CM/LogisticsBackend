@@ -79,7 +79,7 @@ public class ReservationController {
         lambdaQueryWrapper.like(Reservation::getReservationsId, a)
                 .like(Reservation::getMedicalId, b)
                 .like(Reservation::getVisitingId, c)
-                .like(Reservation::getUserId, d);
+                .like(Reservation::getAccount, d);
 
         IPage res = iReservationService.page(page, lambdaQueryWrapper);
         System.out.println(res.getTotal());

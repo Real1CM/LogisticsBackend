@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 19/07/2023 09:09:40
+ Date: 20/07/2023 09:38:05
 */
 
 SET NAMES utf8mb4;
@@ -102,14 +102,15 @@ DROP TABLE IF EXISTS `medical`;
 CREATE TABLE `medical`  (
   `medical_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '医疗ID',
   `medical_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '医疗服务名',
-  `medical_time_ID` int(11) NOT NULL COMMENT '医疗服务时间ID',
+  `medical_schedule_ID` int(11) NOT NULL COMMENT '医疗服务时间ID',
   PRIMARY KEY (`medical_ID`) USING BTREE,
-  INDEX `MedicalTimeID`(`medical_time_ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+  INDEX `MedicalTimeID`(`medical_schedule_ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of medical
 -- ----------------------------
+INSERT INTO `medical` VALUES (1, '1', 2);
 
 -- ----------------------------
 -- Table structure for medicalschedule
@@ -120,11 +121,12 @@ CREATE TABLE `medicalschedule`  (
   `medical_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗服务名',
   `Time` date NOT NULL COMMENT '时间',
   PRIMARY KEY (`medical_schedule_ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of medicalschedule
 -- ----------------------------
+INSERT INTO `medicalschedule` VALUES (1, '1', '2023-07-20');
 
 -- ----------------------------
 -- Table structure for order
@@ -198,12 +200,13 @@ CREATE TABLE `v_code`  (
   `v_cod` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '验证码',
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '没有什么意义的主键',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of v_code
 -- ----------------------------
 INSERT INTO `v_code` VALUES (NULL, NULL, 1);
+INSERT INTO `v_code` VALUES ('19186243797', '175987', 3);
 
 -- ----------------------------
 -- Table structure for visiting
