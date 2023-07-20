@@ -112,4 +112,12 @@ public class MedicalscheduleController {
         lambdaQueryWrapper.eq(Medicalschedule::getMedicalScheduleId, medical.getMedicalScheduleId());
         return medicalscheduleMapper.selectList(lambdaQueryWrapper);
     }
+
+    @ApiOperation("预约查")
+    @PostMapping("/checkIt")
+    public List<Medicalschedule> checkIt(@RequestBody Reservation reservation) {
+        LambdaQueryWrapper<Medicalschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Medicalschedule::getMedicalScheduleId,reservation.getMedicalId());
+        return medicalscheduleMapper.selectList(lambdaQueryWrapper);
+    }
 }

@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.backend.VO.PageVO;
 import com.example.backend.VO.QuaryPageVO;
-import com.example.backend.entity.Reservation;
-import com.example.backend.entity.User;
-import com.example.backend.entity.Visiting;
-import com.example.backend.entity.Visitingschedule;
+import com.example.backend.entity.*;
 import com.example.backend.mapper.VisitingscheduleMapper;
 import com.example.backend.service.IVisitingscheduleService;
 import io.swagger.annotations.ApiOperation;
@@ -112,6 +109,14 @@ public class VisitingscheduleController {
         Visiting visiting = visitingController.selectByRe(reservation);
         LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Visitingschedule::getVisitingId, visiting.getVisitingId());
+        return visitingscheduleMapper.selectList(lambdaQueryWrapper);
+    }
+
+    @ApiOperation("预约查")
+    @PostMapping("/checkIt")
+    public List<Visitingschedule> checkIt(@RequestBody Reservation reservation) {
+        LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Visitingschedule::getVisitingScheduleId,reservation.getVisitingId());
         return visitingscheduleMapper.selectList(lambdaQueryWrapper);
     }
 }

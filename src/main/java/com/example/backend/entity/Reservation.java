@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,11 +31,13 @@ public class Reservation implements Serializable {
     private Integer reservationsId;
 
     @ApiModelProperty(value = "医疗服务ID")
-    @TableField("medical_ID")
+    @TableField("medical_schedule_ID")
+    @JsonProperty("medicalId")
     private Integer medicalId;
 
     @ApiModelProperty(value = "基地预约ID")
-    @TableField("visiting_ID")
+    @TableField("visiting_schedule_ID")
+    @JsonProperty("visitingId")
     private Integer visitingId;
 
     @ApiModelProperty(value = "用户账户")
