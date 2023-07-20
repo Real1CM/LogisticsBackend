@@ -106,10 +106,10 @@ public class MedicalscheduleController {
 
     @ApiOperation("根据预订查时间")
     @PostMapping("/selectTime")
-    public Medicalschedule selectTime(@RequestBody Reservation reservation) {
+    public List<Medicalschedule> selectTime(@RequestBody Reservation reservation) {
         Medical medical = medicalController.selectByRe(reservation);
         LambdaQueryWrapper<Medicalschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Medicalschedule::getMedicalScheduleId, medical.getMedicalScheduleId());
-        return medicalscheduleMapper.selectOne(lambdaQueryWrapper);
+        return medicalscheduleMapper.selectList(lambdaQueryWrapper);
     }
 }

@@ -108,10 +108,10 @@ public class VisitingscheduleController {
 
     @ApiOperation("根据预订查时间")
     @PostMapping("/selectTime")
-    public Visitingschedule selectTime(@RequestBody Reservation reservation) {
+    public List<Visitingschedule> selectTime(@RequestBody Reservation reservation) {
         Visiting visiting = visitingController.selectByRe(reservation);
         LambdaQueryWrapper<Visitingschedule> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Visitingschedule::getVisitingId, visiting.getVisitingId());
-        return visitingscheduleMapper.selectOne(lambdaQueryWrapper);
+        return visitingscheduleMapper.selectList(lambdaQueryWrapper);
     }
 }
