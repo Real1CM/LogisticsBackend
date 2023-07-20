@@ -37,8 +37,8 @@ public class Reservation implements Serializable {
     private Integer visitingId;
 
     @ApiModelProperty(value = "用户ID")
-    @TableField("user_ID")
-    private Integer userId;
+    @TableField("account")
+        private String account;
 
 
 }
